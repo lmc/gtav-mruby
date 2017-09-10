@@ -1,0 +1,8 @@
+MRuby Script Hook for GTAV
+
+WIP
+
+
+Compile instructions:
+
+Link against `libmruby.lib` (ensure it's built for x64), `msvcrtd.lib`, `vcruntimed.lib` and `ScriptHookV.lib`.
