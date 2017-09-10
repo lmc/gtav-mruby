@@ -41,6 +41,23 @@ mrb_value mruby__player__player_ped_id(mrb_state *mrb, mrb_value self) {
 }
 
 
+mrb_value mruby__entity__get_offset_from_entity_in_world_coords(mrb_state *mrb, mrb_value self) {
+	mrb_int a0;
+	mrb_float a1;
+	mrb_float a2;
+	mrb_float a3;
+
+	mrb_get_args(mrb, "ifff", &a0, &a1, &a2, &a3);
+
+	Vector3 rvector3 = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(a0, a1, a2, a3);
+	
+	mrb_value rarray = mrb_ary_new_capa(mrb, 3);
+	mrb_ary_set(mrb, rarray, 0, mrb_float_value(mrb, rvector3.x));
+	mrb_ary_set(mrb, rarray, 1, mrb_float_value(mrb, rvector3.y));
+	mrb_ary_set(mrb, rarray, 2, mrb_float_value(mrb, rvector3.z));
+	return rarray;
+}
+
 
 
 
@@ -70,6 +87,8 @@ void mruby_init() {
 
 	mrb_define_class_method(mrb, module_player, "PLAYER_ID", mruby__player__player_id, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module_player, "PLAYER_PED_ID", mruby__player__player_ped_id, MRB_ARGS_NONE());
+	mrb_define_class_method(mrb, module_entity, "GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS", mruby__entity__get_offset_from_entity_in_world_coords, MRB_ARGS_REQ(4));
+
 }
 
 // called each tick by script engine
