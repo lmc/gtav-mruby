@@ -8,6 +8,7 @@
 #include "utils.h"
 
 #include <io.h>
+#include <string.h>
 #include <fcntl.h>
 
 #ifdef __cplusplus
@@ -18,6 +19,7 @@ extern "C" {
 #include "mruby/array.h"
 #include "mruby/value.h"
 #include "mruby/numeric.h"
+#include "mruby/string.h"
 #ifdef __cplusplus
 }
 #endif
@@ -49,13 +51,17 @@ mrb_value mruby__entity__get_offset_from_entity_in_world_coords(mrb_state *mrb, 
 
 	mrb_get_args(mrb, "ifff", &a0, &a1, &a2, &a3);
 
-	Vector3 rvector3 = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(a0, a1, a2, a3);
+	Vector3 cvector3 = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(a0, a1, a2, a3);
 	
 	mrb_value rarray = mrb_ary_new_capa(mrb, 3);
-	mrb_ary_set(mrb, rarray, 0, mrb_float_value(mrb, rvector3.x));
-	mrb_ary_set(mrb, rarray, 1, mrb_float_value(mrb, rvector3.y));
-	mrb_ary_set(mrb, rarray, 2, mrb_float_value(mrb, rvector3.z));
-	return rarray;
+	mrb_ary_set(mrb, rarray, 0, mrb_float_value(mrb, cvector3.x));
+	mrb_ary_set(mrb, rarray, 1, mrb_float_value(mrb, cvector3.y));
+	mrb_ary_set(mrb, rarray, 2, mrb_float_value(mrb, cvector3.z));
+	//return rarray;
+
+	mrb_value rvector3 = mrb_obj_new(mrb, mrb_class_get(mrb, "Vector3"), 0, NULL);
+	(void)mrb_funcall(mrb, rvector3, "__load", 1, rarray);
+	return rvector3;
 }
 
 
@@ -63,27 +69,68 @@ mrb_value mruby__entity__get_offset_from_entity_in_world_coords(mrb_state *mrb, 
 
 // mruby vm helpers
 
+void mruby_check_exception() {
+	mrb_value message;
+	if (mrb->exc) {
+		(void)mrb_funcall(mrb, mrb_obj_value(module), "on_error", 1, mrb_obj_value(mrb->exc));
+	}
+}
+
+void mruby_load_relative(char filename[]) {
+	FILE *rfile;
+	int error;
+	rfile = fopen(filename, "r");
+	if (rfile == NULL) {
+		fprintf(stdout, "error opening\n");
+	}
+	mrb_load_file(mrb, rfile);
+	if (error = ferror(rfile)) {
+		fprintf(stdout, "error reading %d\n", error);
+	}
+	fclose(rfile);
+	mruby_check_exception();
+}
+
+mrb_value mruby__gtav__load(mrb_state *mrb, mrb_value self) {
+	char *filename;
+	size_t filename_s;
+	mrb_get_args(mrb, "s", &filename, &filename_s);
+	fprintf(stdout, "mruby__gtav__load %s\n",filename);
+	mruby_load_relative(filename);
+	return mrb_nil_value();
+}
+
+
 // sets up the mruby vm + env
 void mruby_init() {
-	// create mruby VM
+	fprintf(stdout, "mruby_init\n");
+
+	FILE *file;
+
+	fprintf(stdout, "creating vm\n");
 	mrb = mrb_open();
 
+	fprintf(stdout, "defining modules\n");
 	// create ruby module inside VM
 	module = mrb_define_module(mrb, "GTAV");
 	module_player = mrb_define_module_under(mrb, module, "PLAYER");
 	module_entity = mrb_define_module_under(mrb, module, "ENTITY");
 
-	fprintf(stdout, "opening ruby\n");
+	fprintf(stdout, "loading bootstrap\n");
 
 	// evaluate bootstrap script
-	FILE *file = fopen("./bootstrap_mrb.rb", "r");
-	mrb_load_file(mrb, file);
-	fclose(file);
-
-	fprintf(stdout, "bootstrapped\n");
+	//file = fopen("./mruby/bootstrap.rb", "r");
+	//mrb_load_file(mrb, file);
+	//fclose(file);
+	//mruby_check_exception();
+	mruby_load_relative("./mruby/bootstrap.rb");
+	fprintf(stdout, "  done\n");
 
 	// make mruby_callnative function callable from ruby
 	// mrb_define_class_method(mrb, module, "callnative", mruby_callnative, MRB_ARGS_ANY());
+
+	fprintf(stdout, "  adding native functions\n");
+	mrb_define_class_method(mrb, module, "load", mruby__gtav__load, MRB_ARGS_REQ(1));
 
 	mrb_define_class_method(mrb, module_player, "PLAYER_ID", mruby__player__player_id, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module_player, "PLAYER_PED_ID", mruby__player__player_ped_id, MRB_ARGS_NONE());
@@ -91,16 +138,28 @@ void mruby_init() {
 
 }
 
+void mruby_load_scripts() {
+	fprintf(stdout, "mruby_load_scripts\n");
+	char filename[2048];
+	int error;
+
+	HANDLE hFind;
+	WIN32_FIND_DATA FindFileData;
+	if ((hFind = FindFirstFile("mruby\\scripts\\*.rb", &FindFileData)) != INVALID_HANDLE_VALUE) {
+		do {
+			sprintf(filename, "./mruby/scripts/%s", FindFileData.cFileName);
+			fprintf(stdout, "loading %s\n", filename);
+			mruby_load_relative(filename);
+		} while (FindNextFile(hFind, &FindFileData));
+		FindClose(hFind);
+	}
+
+}
+
 // called each tick by script engine
 void mruby_tick() {
-	
-	Player player = PLAYER::PLAYER_ID();
-	Ped playerPed = PLAYER::PLAYER_PED_ID();
-	int playerExists = ENTITY::DOES_ENTITY_EXIST(playerPed);
-	Vector3 coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(playerPed, 0.0, 5.0, 0.0);
-
 	// call tick function defined in the ruby module
-	(void)mrb_funcall(mrb, mrb_obj_value(module), "tick", 6, mrb_fixnum_value(player), mrb_fixnum_value(playerPed), mrb_fixnum_value(playerExists), mrb_float_value(mrb,coords.x), mrb_float_value(mrb,coords.y), mrb_float_value(mrb,coords.z));
+	(void)mrb_funcall(mrb, mrb_obj_value(module), "tick", 0);
 }
 
 void mruby_shutdown() {
@@ -140,12 +199,12 @@ void SetStdOutToNewConsole()
 void main()
 {	
 	SetStdOutToNewConsole();
+
 	mruby_init();
-	
+	mruby_load_scripts();
 
 	while (true)
 	{
-		// fprintf(stdout,"updating\n");
 		WAIT(100);
 		mruby_tick();
 	}
