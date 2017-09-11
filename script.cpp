@@ -6,6 +6,7 @@
 
 #include "script.h"
 #include "utils.h"
+#include "keyboard.h"
 
 #include <io.h>
 #include <string.h>
@@ -100,6 +101,13 @@ mrb_value mruby__gtav__load(mrb_state *mrb, mrb_value self) {
 	return mrb_nil_value();
 }
 
+mrb_value mrby__gtav__is_key_down(mrb_state *mrb, mrb_value self) {
+	mrb_int a0;
+	mrb_get_args(mrb, "i", &a0);
+	mrb_bool r0 = IsKeyDown(a0);
+	return mrb_bool_value(r0);
+}
+
 
 // sets up the mruby vm + env
 void mruby_init() {
@@ -131,6 +139,7 @@ void mruby_init() {
 
 	fprintf(stdout, "  adding native functions\n");
 	mrb_define_class_method(mrb, module, "load", mruby__gtav__load, MRB_ARGS_REQ(1));
+	mrb_define_class_method(mrb, module, "is_key_down", mrby__gtav__is_key_down, MRB_ARGS_REQ(1));
 
 	mrb_define_class_method(mrb, module_player, "PLAYER_ID", mruby__player__player_id, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module_player, "PLAYER_PED_ID", mruby__player__player_ped_id, MRB_ARGS_NONE());
