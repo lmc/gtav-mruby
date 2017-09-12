@@ -101,10 +101,16 @@ mrb_value mruby__gtav__load(mrb_state *mrb, mrb_value self) {
 	return mrb_nil_value();
 }
 
-mrb_value mrby__gtav__is_key_down(mrb_state *mrb, mrb_value self) {
+mrb_value mruby__gtav__is_key_down(mrb_state *mrb, mrb_value self) {
 	mrb_int a0;
 	mrb_get_args(mrb, "i", &a0);
 	mrb_bool r0 = IsKeyDown(a0);
+	return mrb_bool_value(r0);
+}
+mrb_value mruby__gtav__is_key_just_up(mrb_state *mrb, mrb_value self) {
+	mrb_int a0;
+	mrb_get_args(mrb, "i", &a0);
+	mrb_bool r0 = IsKeyJustUp(a0);
 	return mrb_bool_value(r0);
 }
 
@@ -121,8 +127,8 @@ void mruby_init() {
 	fprintf(stdout, "defining modules\n");
 	// create ruby module inside VM
 	module = mrb_define_module(mrb, "GTAV");
-	module_player = mrb_define_module_under(mrb, module, "PLAYER");
-	module_entity = mrb_define_module_under(mrb, module, "ENTITY");
+	module_player = mrb_define_module(mrb, "PLAYER");
+	module_entity = mrb_define_module(mrb, "ENTITY");
 
 	fprintf(stdout, "loading bootstrap\n");
 
@@ -139,7 +145,8 @@ void mruby_init() {
 
 	fprintf(stdout, "  adding native functions\n");
 	mrb_define_class_method(mrb, module, "load", mruby__gtav__load, MRB_ARGS_REQ(1));
-	mrb_define_class_method(mrb, module, "is_key_down", mrby__gtav__is_key_down, MRB_ARGS_REQ(1));
+	mrb_define_class_method(mrb, module, "is_key_down", mruby__gtav__is_key_down, MRB_ARGS_REQ(1));
+	mrb_define_class_method(mrb, module, "is_key_just_up", mruby__gtav__is_key_just_up, MRB_ARGS_REQ(1));
 
 	mrb_define_class_method(mrb, module_player, "PLAYER_ID", mruby__player__player_id, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module_player, "PLAYER_PED_ID", mruby__player__player_ped_id, MRB_ARGS_NONE());
@@ -158,7 +165,8 @@ void mruby_load_scripts() {
 		do {
 			sprintf(filename, "./mruby/scripts/%s", FindFileData.cFileName);
 			fprintf(stdout, "loading %s\n", filename);
-			mruby_load_relative(filename);
+			//mruby_load_relative(filename);
+			(void)mrb_funcall(mrb, mrb_obj_value(module), "load_script", 1, mrb_str_new_cstr(mrb, filename));
 		} while (FindNextFile(hFind, &FindFileData));
 		FindClose(hFind);
 	}

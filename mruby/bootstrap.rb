@@ -8,11 +8,15 @@ class Vector3 < Array
   end
 end
 
+class ScriptBase
+  def initialize(*); end;
+  def tick; end
+end
+
 module GTAV
 
-  # initialise once
-  puts "I am initing"
-
+  @@state = nil
+  @@filenames = {}
   @@callbacks = {}
 
   def self.register(name,instance)
@@ -20,10 +24,9 @@ module GTAV
     @@callbacks[name] = instance
   end
 
+  # gets called every engine tick by script.cpp
   def self.tick(*args)
-    # puts "Hello I am ticking with args from C: #{args.inspect}"
-    # retval = self.callnative(0xFFFFFFFF,0xFFFFFFFF, 123, 42069, 219)
-    # puts "Got #{retval}"
+    self.reload! if GTAV.is_key_just_up(0x7A) # F11
     self.tick_callbacks()
   rescue => exception
     puts "!!! #{exception.message}"
@@ -44,6 +47,27 @@ module GTAV
     exception.backtrace.each do |bt|
       puts bt
     end
+  end
+
+  def self.load_script(filename)
+    puts "GTAV.load_script(#{filename.inspect})"
+    @@filenames[filename] = true
+    GTAV.load(filename)
+  end
+
+  def self.reload!
+    puts "GTAV.reload!"
+    @@state = :reloading
+    @@filenames.each_pair do |filename,_|
+      GTAV.load_script(filename)
+    end
+  ensure
+    @@state = nil
+    puts "GTAV.reload! complete"
+  end
+
+  def self.reloading?
+    @@state == :reloading
   end
 
 end
