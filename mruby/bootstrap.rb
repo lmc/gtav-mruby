@@ -1,19 +1,49 @@
 
-class Vector3 < Array
-  def initialize(*args)
-    __load(args)
-  end
-  def __load(array)
-    self.replace(array)
-  end
-end
-
-class ScriptBase
-  def initialize(*); end;
-  def tick; end
-end
-
 module GTAV
+
+  class BoxedObject < ::Array
+    def initialize(*args)
+      __load(args)
+    end
+    def inspect
+      "#{self.class.to_s.gsub("GTAV::","")}(#{self.map{|i| i.inspect}.join(", ")})"
+    end
+  end
+
+  class Vector3 < BoxedObject
+    def __load(*value)
+      self.replace(value)
+    end
+    def x; self[0]; end
+    def y; self[1]; end
+    def z; self[2]; end
+    def x=(v); self[0] = v; end
+    def y=(v); self[1] = v; end
+    def z=(v); self[2] = v; end
+  end
+
+  class BoxedObjectInt < BoxedObject
+    def __load(value)
+      self.replace([value])
+    end
+    def to_i; self[0]; end
+  end
+
+  class Entity < BoxedObjectInt; end
+  class Player < BoxedObjectInt; end
+  class Ped < BoxedObjectInt; end
+  class Vehicle < BoxedObjectInt; end
+  class Object < BoxedObjectInt; end
+  class Pickup < BoxedObjectInt; end
+
+  class Hash < BoxedObjectInt; end
+  class ScrHandle < BoxedObjectInt; end
+  class Cam < BoxedObjectInt; end
+
+  class Script
+    def initialize(*); end;
+    def tick; end
+  end
 
   @@state = nil
   @@filenames = {}
@@ -29,7 +59,7 @@ module GTAV
     self.reload! if GTAV.is_key_just_up(0x7A) # F11
     self.tick_callbacks()
   rescue => exception
-    puts "!!! #{exception.message}"
+    self.on_error(exception)
   end
 
   def self.tick_callbacks
@@ -37,13 +67,15 @@ module GTAV
       begin
         callback.call
       rescue => ex
-        puts "ERROR #{name} - #{ex.message}"
+        puts "ERROR IN #{name}"
+        on_error(ex)
+        puts
       end
     end
   end
 
   def self.on_error(exception)
-    puts "on_error #{exception.message}"
+    puts "#{exception.message}"
     exception.backtrace.each do |bt|
       puts bt
     end
@@ -69,5 +101,4 @@ module GTAV
   def self.reloading?
     @@state == :reloading
   end
-
 end

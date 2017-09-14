@@ -25,48 +25,12 @@ extern "C" {
 }
 #endif
 
+#include "mrubynatives.h"
+
 static mrb_state *mrb;
 static struct RClass *module;
-static struct RClass *module_player;
-static struct RClass *module_entity;
-
 
 // native function wrappers
-
-mrb_value mruby__player__player_id(mrb_state *mrb, mrb_value self) {
-	Player r0 = PLAYER::PLAYER_ID();
-	return mrb_fixnum_value(r0);
-}
-
-mrb_value mruby__player__player_ped_id(mrb_state *mrb, mrb_value self) {
-	Ped r0 = PLAYER::PLAYER_PED_ID();
-	return mrb_fixnum_value(r0);
-}
-
-
-mrb_value mruby__entity__get_offset_from_entity_in_world_coords(mrb_state *mrb, mrb_value self) {
-	mrb_int a0;
-	mrb_float a1;
-	mrb_float a2;
-	mrb_float a3;
-
-	mrb_get_args(mrb, "ifff", &a0, &a1, &a2, &a3);
-
-	Vector3 cvector3 = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(a0, a1, a2, a3);
-	
-	mrb_value rarray = mrb_ary_new_capa(mrb, 3);
-	mrb_ary_set(mrb, rarray, 0, mrb_float_value(mrb, cvector3.x));
-	mrb_ary_set(mrb, rarray, 1, mrb_float_value(mrb, cvector3.y));
-	mrb_ary_set(mrb, rarray, 2, mrb_float_value(mrb, cvector3.z));
-	//return rarray;
-
-	mrb_value rvector3 = mrb_obj_new(mrb, mrb_class_get(mrb, "Vector3"), 0, NULL);
-	(void)mrb_funcall(mrb, rvector3, "__load", 1, rarray);
-	return rvector3;
-}
-
-
-
 
 // mruby vm helpers
 
@@ -124,34 +88,17 @@ void mruby_init() {
 	fprintf(stdout, "creating vm\n");
 	mrb = mrb_open();
 
-	fprintf(stdout, "defining modules\n");
-	// create ruby module inside VM
-	module = mrb_define_module(mrb, "GTAV");
-	module_player = mrb_define_module(mrb, "PLAYER");
-	module_entity = mrb_define_module(mrb, "ENTITY");
-
 	fprintf(stdout, "loading bootstrap\n");
-
-	// evaluate bootstrap script
-	//file = fopen("./mruby/bootstrap.rb", "r");
-	//mrb_load_file(mrb, file);
-	//fclose(file);
-	//mruby_check_exception();
+	module = mrb_define_module(mrb, "GTAV");
 	mruby_load_relative("./mruby/bootstrap.rb");
 	fprintf(stdout, "  done\n");
 
-	// make mruby_callnative function callable from ruby
-	// mrb_define_class_method(mrb, module, "callnative", mruby_callnative, MRB_ARGS_ANY());
-
-	fprintf(stdout, "  adding native functions\n");
+	fprintf(stdout, "adding native functions\n");
 	mrb_define_class_method(mrb, module, "load", mruby__gtav__load, MRB_ARGS_REQ(1));
 	mrb_define_class_method(mrb, module, "is_key_down", mruby__gtav__is_key_down, MRB_ARGS_REQ(1));
 	mrb_define_class_method(mrb, module, "is_key_just_up", mruby__gtav__is_key_just_up, MRB_ARGS_REQ(1));
 
-	mrb_define_class_method(mrb, module_player, "PLAYER_ID", mruby__player__player_id, MRB_ARGS_NONE());
-	mrb_define_class_method(mrb, module_player, "PLAYER_PED_ID", mruby__player__player_ped_id, MRB_ARGS_NONE());
-	mrb_define_class_method(mrb, module_entity, "GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS", mruby__entity__get_offset_from_entity_in_world_coords, MRB_ARGS_REQ(4));
-
+	mruby_install_natives(mrb);
 }
 
 void mruby_load_scripts() {
@@ -164,8 +111,6 @@ void mruby_load_scripts() {
 	if ((hFind = FindFirstFile("mruby\\scripts\\*.rb", &FindFileData)) != INVALID_HANDLE_VALUE) {
 		do {
 			sprintf(filename, "./mruby/scripts/%s", FindFileData.cFileName);
-			fprintf(stdout, "loading %s\n", filename);
-			//mruby_load_relative(filename);
 			(void)mrb_funcall(mrb, mrb_obj_value(module), "load_script", 1, mrb_str_new_cstr(mrb, filename));
 		} while (FindNextFile(hFind, &FindFileData));
 		FindClose(hFind);
@@ -222,7 +167,7 @@ void main()
 
 	while (true)
 	{
-		WAIT(100);
+		WAIT(0);
 		mruby_tick();
 	}
 }
