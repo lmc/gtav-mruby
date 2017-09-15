@@ -1,6 +1,8 @@
 
 NATIVES_H = "../../inc/natives.h"
 
+WITH_TICK_CHECK = true
+
 natives = Hash.new{|h,k| h[k] = {}}
 current_namespace = nil
 
@@ -24,9 +26,6 @@ File.open(NATIVES_H,"r") do |f|
       return_type: return_type,
       arguments: args
     }
-    # puts current_namespace
-    # puts name
-    # puts natives[current_namespace][name].inspect
   end
 end
 
@@ -37,7 +36,7 @@ def return_for_type(type)
     "return mrb_nil_value();"
   when "BOOL"
     "return mrb_bool_value(r0);"
-  when "int"
+  when "int", "Any"
     "return mrb_fixnum_value(r0);"
   when "float"
     "return mrb_float_value(mrb,r0);"
@@ -47,7 +46,7 @@ mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "
   (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
   return rret;
 CPP
-  when "Ped", "Entity", "Vehicle"
+  when "Ped", "Entity", "Vehicle", "Hash", "Blip", "Cam","ScrHandle","Pickup"
     <<-CPP
 if(r0 == 0) {
     return mrb_nil_value();
@@ -60,8 +59,12 @@ CPP
   when "Vector3"
     <<-CPP
 mrb_value rvector3 = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Vector3"), 0, NULL);
-  (void)mrb_funcall(mrb, rvector3, "__load", 3, mrb_float_value(mrb, cvector3.x), mrb_float_value(mrb, cvector3.y), mrb_float_value(mrb, cvector3.z));
+  (void)mrb_funcall(mrb, rvector3, "__load", 3, mrb_float_value(mrb, r0.x), mrb_float_value(mrb, r0.y), mrb_float_value(mrb, r0.z));
   return rvector3;
+CPP
+  when "char*"
+    <<-CPP
+return mrb_str_new_cstr(mrb,cstr);
 CPP
   else
     raise "unknown type #{type}"
@@ -72,22 +75,16 @@ def cassigns_for_type(type)
   case type
   when "void"
     ""
-  when "Player"
-    "Player r0 = "
-  when "Ped"
-    "Ped r0 = "
-  when "Vector3"
-    "Vector3 cvector3 = "
-  when "Vehicle"
-    "Vehicle r0 = "
-  when "Entity"
-    "Entity r0 = "
+  when "Any", "Vector3", "Player", "Ped", "Entity", "Vehicle", "Hash", "Blip", "Cam","ScrHandle","Pickup"
+    "#{type} r0 = "
   when "float"
     "mrb_float r0 = "
   when "int"
     "mrb_int r0 = "
   when "BOOL"
     "mrb_bool r0 = "
+  when "char*"
+    "char* cstr = "
   else
     raise "unknown type #{type}"
   end
@@ -99,22 +96,32 @@ def mrb_value_defines(arguments)
   cargs = []
   crargs = []
   arguments.each_with_index do |arg,i|
-    mrb_type, mrb_char = mrb_type_and_char(arg)
-    defs << "#{mrb_type} a#{i};"
+    mrb_types, mrb_char, n_cargs, n_crargs = mrb_type_and_char(arg,i)
+    defs += mrb_types
     chars << mrb_char
-    cargs << "a#{i}"
-    crargs << "&a#{i}"
+    cargs += n_cargs
+    crargs += n_crargs
   end
   [defs.join("\n  "),chars.join(""),cargs.join(", "),crargs.join(", ")]
 end
 
-def mrb_type_and_char(arg)
+def mrb_type_and_char(arg,i)
   case arg[:type]
+  when "char*"
+    [["char* a#{i};","int a#{i}_size;"],"s",["a#{i}"],["&a#{i}, &a#{i}_size"]]
+  when "BOOL"
+    [["mrb_bool a#{i};"],"b",["a#{i}"],["&a#{i}"]]
   when "float"
-    ["mrb_float","f"]
+    [["mrb_float a#{i};"],"f",["a#{i}"],["&a#{i}"]]
+  when "Vehicle*","Ped*","Entity*","Any*"
+    [["#{arg[:type].gsub("*","")} a#{i};"],"i",["&a#{i}"],["&a#{i}"]]
   else
-    ["mrb_int","i"]
+    [["mrb_int a#{i};"],"i",["a#{i}"],["&a#{i}"]]
   end
+end
+
+def tick_check
+  "\n  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,\"CallLimitExceeded\"), \"\");"
 end
 
 
@@ -125,11 +132,18 @@ mrb_defines = []
 natives.each_pair do |mname,namespace|
   module_defines << "struct RClass *module_#{mname.downcase} = mrb_define_module(mrb, \"#{mname}\");"
   namespace.each_pair do |fname,definition|
+    gen = true
     # next unless ["PED","ENTITY","GRAPHICS","VEHICLE","PLAYER"].include?( mname )
-    next unless ["void","Player","Ped","Vector3","Vehicle","Entity","int","float","BOOL"].include?( definition[:return_type] )
+    gen = false unless ["void","Player","Ped","Vector3","Vehicle","Entity","int","float","BOOL","Hash","Any","Blip","Cam","ScrHandle","Pickup","char*"].include?( definition[:return_type] )
     # next unless [0,4].include?( definition[:arguments].size )
-    next unless definition[:arguments].all?{|a| ["Entity","float","BOOL","int","Ped","Player","Vehicle","Entity","Any","Object","Hash"].include?(a[:type]) }
+    gen = false unless definition[:arguments].all?{|a| ["Entity","float","BOOL","int","Ped","Player","Vehicle","Entity","Any","Object","Hash","Blip","Cam","ScrHandle","Pickup","char*","Vehicle*","Ped*","Entity*","Any*"].include?(a[:type]) }
+    gen = false unless definition[:arguments].each_with_index.all?{|a,i| ["Vehicle*","Ped*","Entity*","Any*"].include?(a[:type]) ? i == 0 : true }
     # puts [mname,fname,definition].inspect
+
+    if !gen
+      puts "// not generating #{mname}::#{fname} - #{definition.inspect}"
+      next
+    end
 
     cname = "mruby__#{mname}__#{fname}"
     mrb_args_def = "MRB_ARGS_NONE()"
@@ -142,9 +156,7 @@ natives.each_pair do |mname,namespace|
 
     mrb_defines << "mrb_define_class_method(mrb, module_#{mname.downcase}, \"#{fname}\", #{cname}, #{mrb_args_def});"
     function_bodies << <<-CPP
-mrb_value #{cname}(mrb_state *mrb, mrb_value self) {
-  #{mrb_value_defs}
-  #{mrb_get_args if mrb_get_args}
+mrb_value #{cname}(mrb_state *mrb, mrb_value self) {#{WITH_TICK_CHECK ? tick_check : ""}#{"\n  "+mrb_value_defs+"\n" if mrb_value_defs.size > 0}#{"  "+mrb_get_args+"" if mrb_get_args}
   #{cassigns_for_type(definition[:return_type])}#{mname}::#{fname}(#{cargs});
   #{return_for_type(definition[:return_type]).chomp}
 }
@@ -181,8 +193,10 @@ extern "C" {
 }
 #endif
 
+static int call_limit_enabled = 0;
+static int call_limit = 1000;
 
-#{function_bodies.join("\n\n\n")}
+#{function_bodies.join("\n")}
 
 
 void mruby_install_natives(mrb_state *mrb) {
@@ -191,9 +205,26 @@ void mruby_install_natives(mrb_state *mrb) {
   #{mrb_defines.join("\n  ")}
 }
 
+mrb_value mruby__gtav__set_call_limit(mrb_state *mrb, mrb_value self) {
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  if(a0 == -1){
+    call_limit_enabled = 0;
+  } else {
+    call_limit_enabled = 1;
+  }
+  call_limit = a0;
+  return mrb_nil_value();
+}
+
+mrb_value mruby__gtav__get_call_limit(mrb_state *mrb, mrb_value self) {
+  return mrb_fixnum_value(call_limit);
+}
+
 CPP
 
 print template
 
-
-puts "// generated #{function_bodies.size} natives"
+generated = function_bodies.size
+total = natives.values.map(&:size).inject(0){|a,i| a + i}
+puts "// generated #{generated} out of #{total} native functions (#{total - generated} ungenerated)"
