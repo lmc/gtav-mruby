@@ -140,6 +140,17 @@ mrb_value mruby__gtav__world_get_all_vehicles(mrb_state *mrb, mrb_value self) {
 	return rarray;
 }
 
+mrb_value mruby__gtav__world_get_all_peds(mrb_state *mrb, mrb_value self) {
+	const int ARR_SIZE = 128;
+	Ped arr[ARR_SIZE];
+	int ret = worldGetAllPeds(arr, ARR_SIZE);
+	mrb_value rarray = mrb_ary_new_capa(mrb, ret);
+	for (int i = 0; i < ret; i++) {
+		mrb_ary_set(mrb, rarray, i, mrb_fixnum_value(arr[i]));
+	}
+	return rarray;
+}
+
 
 // sets up the mruby vm + env
 void mruby_init() {
@@ -159,6 +170,7 @@ void mruby_init() {
 	mrb_define_class_method(mrb, module, "get_call_limit", mruby__gtav__get_call_limit, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module, "spawn_console", mruby__gtav__spawn_console, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module, "world_get_all_vehicles", mruby__gtav__world_get_all_vehicles, MRB_ARGS_NONE());
+	mrb_define_class_method(mrb, module, "world_get_all_peds", mruby__gtav__world_get_all_peds, MRB_ARGS_NONE());
 
 
 	fprintf(stdout, "loading bootstrap\n");

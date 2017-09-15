@@ -48,64 +48,56 @@ end
 
 
 
-def distance(a,b)
-  if a > b
-    a - b
-  else
-    b - a
-  end
-end
+# def distance(a,b)
+#   if a > b
+#     a - b
+#   else
+#     b - a
+#   end
+# end
 
 
-GTAV.register(:HelloWorld) do
-  loop do
-    player_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,0.0,0.0)
-    origin_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,1.0,3.0)
-    start = GTAV.time
-    ($all_vehicles || []).each do |vehicle|
-      if ENTITY::IS_ENTITY_A_VEHICLE(vehicle)
-        vehicle_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle,0.0,0.0,1.0)
-        GRAPHICS::DRAW_LINE(*player_coords,*vehicle_coords,0,255,0,255)
-      end
-    end
+# GTAV.register(:HelloWorld) do
+#   loop do
+#     player_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,0.0,0.0)
+#     origin_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,1.0,3.0)
+#     start = GTAV.time
+#     ($all_vehicles || []).each do |vehicle|
+#       if ENTITY::IS_ENTITY_A_VEHICLE(vehicle)
+#         vehicle_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle,0.0,0.0,1.0)
+#         GRAPHICS::DRAW_LINE(*player_coords,*vehicle_coords,0,255,0,255)
+#       end
+#     end
 
-    GTAV.wait(0)
-  end
-end
-GTAV.register(:HelloWorld2) do
-  loop do
-    player_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,0.0,0.0)
-    origin_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,1.0,3.0)
-    start = GTAV.time
-    ($all_vehicles || []).each do |vehicle|
-      if ENTITY::IS_ENTITY_A_VEHICLE(vehicle)
-        vehicle_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle,0.0,0.0,1.0)
-        GRAPHICS::DRAW_LINE(*player_coords,*vehicle_coords,0,255,0,255)
-      end
-    end
+#     GTAV.wait(0)
+#   end
+# end
+# GTAV.register(:HelloWorld2) do
+#   loop do
+#     player_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,0.0,0.0)
+#     origin_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,1.0,3.0)
+#     start = GTAV.time
+#     ($all_vehicles || []).each do |vehicle|
+#       if ENTITY::IS_ENTITY_A_VEHICLE(vehicle)
+#         vehicle_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle,0.0,0.0,1.0)
+#         GRAPHICS::DRAW_LINE(*player_coords,*vehicle_coords,0,255,0,255)
+#       end
+#     end
 
-    GTAV.wait(0)
-  end
-end
+#     GTAV.wait(0)
+#   end
+# end
 
-GTAV.register(:HelloWorldUpdater) do
-  loop do
-    player_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,0.0,0.0)
-    $all_vehicles = GTAV::world_get_all_vehicles().select do |vehicle|
-      if ENTITY::IS_ENTITY_A_VEHICLE(vehicle)
-        vehicle_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle,0.0,0.0,1.0)
-        distance = GAMEPLAY::GET_DISTANCE_BETWEEN_COORDS(*player_coords,*vehicle_coords,true)
-        if distance < 100.0
-          true
-        else
-          false
-          # true
-        end
-      else
-        false
-        # true
-      end
-    end
-    GTAV.wait(1000)
-  end
-end
+# GTAV.register(:HelloWorldUpdater) do
+#   loop do
+#     player_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,0.0,0.0)
+#     $all_vehicles = GTAV::world_get_all_vehicles().select do |vehicle|
+#       if ENTITY::IS_ENTITY_A_VEHICLE(vehicle)
+#         vehicle_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle,0.0,0.0,1.0)
+#         distance = GAMEPLAY::GET_DISTANCE_BETWEEN_COORDS(*player_coords,*vehicle_coords,true)
+#         if distance < 100.0
+#           true
+#         else
+#           false
+#           # true
+#     

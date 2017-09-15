@@ -43666,6 +43666,29 @@ mrb_value mruby__UNK3___GET_GAME_VERSION(mrb_state *mrb, mrb_value self) {
   return mrb_str_new_cstr(mrb,cstr);
 }
 
+  mrb_value mruby__GRAPHICS___WORLD3D_TO_SCREEN2D(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+      mrb_float a0;
+  mrb_float a1;
+  mrb_float a2;
+  mrb_get_args(mrb,"fff",&a0,&a1,&a2);
+
+  float r0;
+  float r1;
+
+  GRAPHICS::_WORLD3D_TO_SCREEN2D(a0,a1,a2,&r0,&r1);
+
+  if(r0 < 0.0 && r1 < 0.0) {
+    return mrb_nil_value();
+  } else {
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+    mrb_ary_set(mrb,rarray,0,mrb_float_value(mrb,r0));
+    mrb_ary_set(mrb,rarray,1,mrb_float_value(mrb,r1));
+    return rarray;
+  }
+
+  }
+
 
 
 void mruby_install_natives(mrb_state *mrb) {
@@ -48540,6 +48563,7 @@ void mruby_install_natives(mrb_state *mrb) {
   mrb_define_class_method(mrb, module_unk3, "_0x498C1E05CE5F7877", mruby__UNK3___0x498C1E05CE5F7877, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, module_unk3, "_0x9507D4271988E1AE", mruby__UNK3___0x9507D4271988E1AE, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_unk3, "_GET_GAME_VERSION", mruby__UNK3___GET_GAME_VERSION, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, module_graphics, "_WORLD3D_TO_SCREEN2D", mruby__GRAPHICS___WORLD3D_TO_SCREEN2D, MRB_ARGS_REQ(3));
 }
 
 mrb_value mruby__gtav__set_call_limit(mrb_state *mrb, mrb_value self) {
@@ -48558,4 +48582,4 @@ mrb_value mruby__gtav__get_call_limit(mrb_state *mrb, mrb_value self) {
   return mrb_fixnum_value(call_limit);
 }
 
-// generated 4828 out of 5180 native functions (352 ungenerated)
+// generated 4829 out of 5180 native functions (351 ungenerated)

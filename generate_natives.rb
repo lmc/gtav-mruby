@@ -126,8 +126,20 @@ end
 
 
 module_defines = []
-function_bodies = []
-mrb_defines = []
+$function_bodies = []
+$mrb_defines = []
+
+def define_native(mname,fname,argc,body)
+  cname = "mruby__#{mname}__#{fname}"
+  mrb_args_def = "MRB_ARGS_NONE()"
+  mrb_args_def = "MRB_ARGS_REQ(#{argc})" if argc > 0
+  $mrb_defines << "mrb_define_class_method(mrb, module_#{mname.downcase}, \"#{fname}\", #{cname}, #{mrb_args_def});"
+  $function_bodies << <<-CPP
+  mrb_value #{cname}(mrb_state *mrb, mrb_value self) {#{WITH_TICK_CHECK ? tick_check : ""}
+    #{body}
+  }
+CPP
+end
 
 natives.each_pair do |mname,namespace|
   module_defines << "struct RClass *module_#{mname.downcase} = mrb_define_module(mrb, \"#{mname}\");"
@@ -154,8 +166,8 @@ natives.each_pair do |mname,namespace|
       mrb_args_def = "MRB_ARGS_REQ(#{definition[:arguments].size})"
     end
 
-    mrb_defines << "mrb_define_class_method(mrb, module_#{mname.downcase}, \"#{fname}\", #{cname}, #{mrb_args_def});"
-    function_bodies << <<-CPP
+    $mrb_defines << "mrb_define_class_method(mrb, module_#{mname.downcase}, \"#{fname}\", #{cname}, #{mrb_args_def});"
+    $function_bodies << <<-CPP
 mrb_value #{cname}(mrb_state *mrb, mrb_value self) {#{WITH_TICK_CHECK ? tick_check : ""}#{"\n  "+mrb_value_defs+"\n" if mrb_value_defs.size > 0}#{"  "+mrb_get_args+"" if mrb_get_args}
   #{cassigns_for_type(definition[:return_type])}#{mname}::#{fname}(#{cargs});
   #{return_for_type(definition[:return_type]).chomp}
@@ -164,6 +176,26 @@ CPP
   end
 end
 
+define_native("GRAPHICS","_WORLD3D_TO_SCREEN2D",3,<<-CPP)
+  mrb_float a0;
+  mrb_float a1;
+  mrb_float a2;
+  mrb_get_args(mrb,"fff",&a0,&a1,&a2);
+
+  float r0;
+  float r1;
+
+  GRAPHICS::_WORLD3D_TO_SCREEN2D(a0,a1,a2,&r0,&r1);
+
+  if(r0 < 0.0 && r1 < 0.0) {
+    return mrb_nil_value();
+  } else {
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+    mrb_ary_set(mrb,rarray,0,mrb_float_value(mrb,r0));
+    mrb_ary_set(mrb,rarray,1,mrb_float_value(mrb,r1));
+    return rarray;
+  }
+CPP
 
 template = <<-CPP
 /*
@@ -196,13 +228,13 @@ extern "C" {
 static int call_limit_enabled = 0;
 static int call_limit = 1000;
 
-#{function_bodies.join("\n")}
+#{$function_bodies.join("\n")}
 
 
 void mruby_install_natives(mrb_state *mrb) {
   #{module_defines.join("\n  ")}
 
-  #{mrb_defines.join("\n  ")}
+  #{$mrb_defines.join("\n  ")}
 }
 
 mrb_value mruby__gtav__set_call_limit(mrb_state *mrb, mrb_value self) {
@@ -225,6 +257,6 @@ CPP
 
 print template
 
-generated = function_bodies.size
+generated = $function_bodies.size
 total = natives.values.map(&:size).inject(0){|a,i| a + i}
 puts "// generated #{generated} out of #{total} native functions (#{total - generated} ungenerated)"

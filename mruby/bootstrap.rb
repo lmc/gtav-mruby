@@ -8,6 +8,9 @@ module GTAV
     def inspect
       "#{self.class.to_s.gsub("GTAV::","")}(#{self.map{|i| i.inspect}.join(", ")})"
     end
+    def to_s
+      inspect
+    end
   end
 
   class Vector3 < BoxedObject

@@ -23,8 +23,9 @@ module GTAV
 
   CALL_LIMIT = 4096
   @@do_metrics = false
+  INSTRUMENTATION_QUEUE_TICKS_SIZE = 60
   INSTRUMENTATION_QUEUE_SIZE = 20
-  @@counters_tick_times = Queue.new(INSTRUMENTATION_QUEUE_SIZE)
+  @@counters_tick_times = Queue.new(INSTRUMENTATION_QUEUE_TICKS_SIZE)
   @@counters_fiber_tick_times = {}
   @@counters_fiber_calls = {}
 
@@ -35,7 +36,7 @@ module GTAV
     @@counters_fiber_tick_times[name] = Queue.new(INSTRUMENTATION_QUEUE_SIZE)
     @@counters_fiber_calls[name] = Queue.new(INSTRUMENTATION_QUEUE_SIZE)
   end
-  
+
   # gets called every engine tick by script.cpp
   def self.tick(*args)
     begin

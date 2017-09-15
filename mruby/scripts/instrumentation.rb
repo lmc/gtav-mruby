@@ -1,7 +1,13 @@
 GTAV.register(:Instrumentation) do
 
+  DISPLAY_MODES = [:none,:time,:calls,:all]
+  @mode = :time
+
   def avg(array,default = 0.0)
-    num = array.inject(default){|a,i| a + i} / array.size
+    num = 0
+    array.each{|i| num += i}
+    num /= array.size
+    # num = array.inject(default){|a,i| a + i} / array.size
     num = 0.0 if num.nan?
     num
   end
@@ -23,7 +29,6 @@ GTAV.register(:Instrumentation) do
   end
 
   @data = []
-  @data[0] = ["Fiber Name","Avg. Time","Avg. Calls","Max Time","Max Calls"]
   @data_update_idx = 0
   def update_data_once!
     _update_data!(@data_update_idx)
@@ -34,6 +39,10 @@ GTAV.register(:Instrumentation) do
     end
   end
   def update_all_data!
+    @data = []
+    @data[0] = ["Fiber Name"]
+    @data[0] += ["Avg. Time","Max Time"] if [:time,:all].include?(@mode)
+    @data[0] += ["Avg. Calls","Max Calls"] if [:calls,:all].include?(@mode)
     GTAV.counters_fiber_calls.keys.each_with_index do |name,i|
       @data[i + 1] = []
       update_data_once!
@@ -43,19 +52,20 @@ GTAV.register(:Instrumentation) do
   end
   def _update_data!(idx)
     name = GTAV.counters_fiber_calls.keys[idx]
-    times = GTAV.counters_tick_times
     total_last_calls = -1
 
-    calls = GTAV.counters_fiber_calls[name].to_a
-    tick_times = GTAV.counters_fiber_tick_times[name].to_a
-
-    row = [
-      "#{name}",
-      "#{(avg(tick_times,0.0) * 1000.0).round(3)}ms",
-      "#{avg(calls).to_i}",
-      "#{(max(tick_times) * 1000.0).round(3)}",
-      "#{max(calls)}"
-    ]
+    row = []
+    row << name.to_s
+    if [:time,:all].include?(@mode)
+      tick_times = GTAV.counters_fiber_tick_times[name].to_a
+      row << "#{sprintf("%.3f",avg(tick_times,0.0) * 1000.0)}ms"
+      row << "#{sprintf("%.3f",max(tick_times,0.0) * 1000.0)}ms"
+    end
+    if [:calls,:all].include?(@mode)
+      calls = GTAV.counters_fiber_calls[name].to_a
+      row << avg(calls).to_i.to_s
+      row << max(calls).to_s
+    end
 
     # + 1 for header row
     @data[idx + 1] = row
@@ -63,36 +73,11 @@ GTAV.register(:Instrumentation) do
   def update_totals!
     total_last_calls = -1
     times = GTAV.counters_tick_times
-    @data[-1] = [
-      "GTAV.tick Total",
-      "#{(avg(times,0.0) * 1000.0).round(3)}ms",
-      "#{total_last_calls}",
-      "#{(max(times,0) * 1000.0).round(3)}ms",
-      "-"
-    ]
-  end
-
-  ox = 0.01
-  oy = 0.01
-  xd = 0.05
-  yd = 0.03
-  widths = [0.1,0.05,0.05,0.05,0.05]
-  update_all_data!
-
-  loop do
-    update_data_once!
-
-    x = ox
-    y = oy
-    @data.each_with_index do |row,ri|
-      row.each_with_index do |column,ci|
-        draw_text(x,y,@data[ri][ci])
-        x += widths[ci]
-      end
-      y += yd
-      x = ox
+    @data[-1] = ["GTAV.tick Total"]
+    if [:time,:all].include?(@mode)
+      @data[-1] += [
+        "#{sprintf("%.3f",avg(times,0.0) * 1000.0)}ms",
+        "#{sprintf("%.3f",max(times,0.0) * 1000.0)}ms",
+      ]
     end
-
-    GTAV.wait(0)
-  end
-end
+    
