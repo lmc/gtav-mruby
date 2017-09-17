@@ -40,7 +40,7 @@ def gather_cats()
   end
 end
 
-GTAV.register(:FriendFinder) do
+GTAV.register(:FriendFinder,false) do
   next_update_time = 0
   loop do
     if GTAV.time > next_update_time
@@ -65,9 +65,9 @@ GTAV.register(:FriendFinder) do
         draw_for_animal(ped,weapon,player_coords)
       end
     end
-    if GTAV.is_key_just_up(0x76) # F7
-      gather_cats()
-    end
+    # if GTAV.is_key_just_up(0x76) # F7
+    #   gather_cats()
+    # end
     GTAV.wait(0)
   end
 end

@@ -1,15 +1,10 @@
 
 module GTAV
 
+  # wrapper classes for native game types
   class BoxedObject < Array
     def initialize(*args)
       __load(args)
-    end
-    def inspect
-      "#{self.class.to_s.gsub("GTAV::","")}(#{self.map{|i| i.inspect}.join(", ")})"
-    end
-    def to_s
-      inspect
     end
   end
 
@@ -17,56 +12,44 @@ module GTAV
     def __load(*value)
       self.replace(value)
     end
-    def x; self[0]; end
-    def y; self[1]; end
-    def z; self[2]; end
-    def x=(v); self[0] = v; end
-    def y=(v); self[1] = v; end
-    def z=(v); self[2] = v; end
   end
 
   class BoxedObjectInt < BoxedObject
     def __load(value)
       self.replace([value])
     end
-    def to_i; self[0]; end
   end
 
+  class Any < BoxedObjectInt; end
+
   class Entity < BoxedObjectInt; end
+
+  class Ped < Entity; end
+  class Vehicle < Entity; end
+  class Object < Entity; end
+
   class Player < BoxedObjectInt; end
-  class Ped < BoxedObjectInt; end
-  class Vehicle < BoxedObjectInt; end
-  class Object < BoxedObjectInt; end
   class Pickup < BoxedObjectInt; end
   class Blip < BoxedObjectInt; end
-  class Any < BoxedObjectInt; end
 
   class Hash < BoxedObjectInt; end
   class ScrHandle < BoxedObjectInt; end
   class Cam < BoxedObjectInt; end
 
-  class Script
-    def initialize(*); end
-    def tick; end
-  end
-
   # gets called every engine tick by script.cpp
   def self.tick(*args)
-    puts "Bootstrapped GTAV.tick, ensure a runtime is loaded"
+    log "Bootstrapped GTAV.tick, ensure a runtime is loaded"
   end
 
   def self.on_error(exception)
-    puts "#{exception.class} - #{exception.message}"
-    puts "#{exception.backtrace.inspect}"
+    # log "#{exception.inspect}", :error
+    log "#{exception.class} - #{exception.message}", :error
     exception.backtrace.each do |bt|
-      puts bt
+      log "  #{bt}", :error
     end
   end
 
-  @@filenames = {}
   def self.load_script(filename)
-    puts "GTAV.load_script(#{filename.inspect})"
-    @@filenames[filename] = true
     begin
       GTAV.load(filename)
     rescue => ex
@@ -74,11 +57,24 @@ module GTAV
     end
   end
 
+  def self.wait(ms)
+    log "Bootstrapped GTAV.wait, ensure a runtime is loaded"
+  end
+
+  def self.register(*,&block)
+    log "Bootstrapped GTAV.register, ensure a runtime is loaded"
+    block.call if block_given?
+  end
+
+  def self.log(*args)
+    puts "GTAV.log - #{args.inspect}"
+  end
+
 end
 
+def log(*args)
+  GTAV.log(*args)
+end
+
+# exceptions created by c code
 class CallLimitExceeded < StandardError; end
-
-CONFIG = {}
-GTAV.load_script("./mruby/config.rb")
-
-GTAV.load_script("./mruby/runtime.rb")
