@@ -52,18 +52,29 @@ COORDS_TEXT = UiStyledText.new()
 GTAV.register(:HelloWorld) do
   loop do
 
+    # log "player_ped_id: #{player_ped_id}"
+
     pid = PLAYER::PLAYER_ID()
     ppid = PLAYER::PLAYER_PED_ID()
 
-    coords = ENTITY::GET_ENTITY_COORDS(ppid,false)
-    COORDS_TEXT.draw("#{coords[0].round(3)}",0.45,0.1)
-    COORDS_TEXT.draw("#{coords[1].round(3)}",0.45,0.1+0.05)
-    COORDS_TEXT.draw("#{coords[2].round(3)}",0.45,0.1+0.1)
+    # coords = ENTITY::GET_ENTITY_COORDS(ppid,false)
+    # COORDS_TEXT.draw("#{coords[0].round(3)}",0.45,0.1)
+    # COORDS_TEXT.draw("#{coords[1].round(3)}",0.45,0.1+0.05)
+    # COORDS_TEXT.draw("#{coords[2].round(3)}",0.45,0.1+0.1)
+
+    # gz = GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(*coords,true)
+    # if gz
+    #   COORDS_TEXT.draw("gz: #{gz.round(3)}",0.45,0.1+0.15)
+    # end
+
+    # weapon = WEAPON::GET_CURRENT_PED_WEAPON(ppid,false)
+    # COORDS_TEXT.draw("weapon: #{weapon.inspect}",0.45,0.3+0.1)
+    # shooted = WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(ppid)
+    # COORDS_TEXT.draw("shooted: #{shooted.inspect}",0.45,0.3+0.2)
+
 
     model = ENTITY::GET_ENTITY_MODEL(ppid)
     if ENTITY::IS_ENTITY_DEAD(ppid) || PLAYER::IS_PLAYER_BEING_ARRESTED(pid, true)
-      puts "hashes: #{["player_zero","player_one","player_two"].map{|s| GAMEPLAY::GET_HASH_KEY(s).to_i}.inspect}"
-      puts "model: #{model.inspect}"
       if not ["player_zero","player_one","player_two"].map{|s| GAMEPLAY::GET_HASH_KEY(s).to_i}.include?(model)
         log "resetting player on deatharrest"
         model = GAMEPLAY::GET_HASH_KEY("player_zero")

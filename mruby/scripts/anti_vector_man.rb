@@ -1,8 +1,7 @@
 
-$all_entities = QueueSet.new(64)
+# $all_entities = QueueSet.new(64)
 
-$avm_entities = QueueSet.new(64)
-# $avm_entities = []
+$avm_entities = QueueSet.new(32)
 
 GTAV.register(:AVM,true) do
   loop do
@@ -25,7 +24,7 @@ GTAV.register(:AVM,true) do
     # puts "armed: #{!WEAPON::IS_PED_ARMED(PLAYER::PLAYER_ID(),7)}"
     # puts "controls: #{CONTROLS::GET_CONTROL_VALUE(20,77)}"
 
-    ($avm_entities.to_a || []).each do |vehicle|
+    ($avm_entities.array || []).each do |vehicle|
       entity_type = nil
       entity_type = :vehicle if ENTITY::IS_ENTITY_A_VEHICLE(vehicle) && vehicle != player_vehicle.to_i
       entity_type = :ped if ENTITY::IS_ENTITY_A_PED(vehicle) && vehicle != player_ped_id.to_i
@@ -87,7 +86,7 @@ GTAV.register(:AVMUpdater,true) do
       if distance < 50.0
         $avm_entities.push(ent)
       end
-      $all_entities.push(ent)
+      # $all_entities.push(ent)
     end
   end
 end

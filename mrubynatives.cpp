@@ -1,8 +1,6 @@
-// not generating ENTITY::GET_ENTITY_QUATERNION - {:return_type=>"void", :arguments=>[{:type=>"Entity", :name=>"entity"}, {:type=>"float*", :name=>"x"}, {:type=>"float*", :name=>"y"}, {:type=>"float*", :name=>"z"}, {:type=>"float*", :name=>"w"}]}
 // not generating ENTITY::GET_ENTITY_SCRIPT - {:return_type=>"char*", :arguments=>[{:type=>"Entity", :name=>"entity"}, {:type=>"Any*", :name=>"script"}]}
 // not generating ENTITY::PLAY_SYNCHRONIZED_MAP_ENTITY_ANIM - {:return_type=>"BOOL", :arguments=>[{:type=>"float", :name=>"p0"}, {:type=>"float", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"Any", :name=>"p4"}, {:type=>"Any", :name=>"p5"}, {:type=>"Any*", :name=>"p6"}, {:type=>"Any*", :name=>"p7"}, {:type=>"float", :name=>"p8"}, {:type=>"float", :name=>"p9"}, {:type=>"Any", :name=>"p10"}, {:type=>"float", :name=>"p11"}]}
 // not generating ENTITY::FIND_ANIM_EVENT_PHASE - {:return_type=>"BOOL", :arguments=>[{:type=>"char*", :name=>"animDictionary"}, {:type=>"char*", :name=>"animName"}, {:type=>"char*", :name=>"p2"}, {:type=>"Any*", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}]}
-// not generating ENTITY::SET_OBJECT_AS_NO_LONGER_NEEDED - {:return_type=>"void", :arguments=>[{:type=>"Object*", :name=>"object"}]}
 // not generating PED::GET_PED_LAST_DAMAGE_BONE - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Any*", :name=>"outBone"}]}
 // not generating PED::GET_PED_PARACHUTE_TINT_INDEX - {:return_type=>"void", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Any*", :name=>"outTintIndex"}]}
 // not generating PED::ADD_RELATIONSHIP_GROUP - {:return_type=>"Any", :arguments=>[{:type=>"char*", :name=>"name"}, {:type=>"Hash*", :name=>"groupHash"}]}
@@ -26,10 +24,6 @@
 // not generating PED::GET_PED_NEARBY_PEDS - {:return_type=>"int", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"int*", :name=>"sizeAndPeds"}, {:type=>"int", :name=>"pedTypeToIgnore"}]}
 // not generating PED::_0x280C7E3AC7F56E90 - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"Any*", :name=>"p3"}]}
 // not generating PED::_0xB782F8238512BAD5 - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
-// not generating VEHICLE::GET_VEHICLE_CUSTOM_PRIMARY_COLOUR - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}]}
-// not generating VEHICLE::GET_VEHICLE_CUSTOM_SECONDARY_COLOUR - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}]}
-// not generating VEHICLE::GET_VEHICLE_COLOURS - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"colorPrimary"}, {:type=>"int*", :name=>"colorSecondary"}]}
-// not generating VEHICLE::GET_VEHICLE_LIGHTS_STATE - {:return_type=>"BOOL", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"lightsOn"}, {:type=>"int*", :name=>"highbeamsOn"}]}
 // not generating VEHICLE::GET_VEHICLE_RECORDING_ID - {:return_type=>"Any", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating VEHICLE::REQUEST_VEHICLE_RECORDING - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating VEHICLE::HAS_VEHICLE_RECORDING_BEEN_LOADED - {:return_type=>"BOOL", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
@@ -39,17 +33,7 @@
 // not generating VEHICLE::START_PLAYBACK_RECORDED_VEHICLE - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"BOOL", :name=>"p3"}]}
 // not generating VEHICLE::START_PLAYBACK_RECORDED_VEHICLE_WITH_FLAGS - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"Any", :name=>"p3"}, {:type=>"Any", :name=>"p4"}, {:type=>"Any", :name=>"p5"}]}
 // not generating VEHICLE::START_PLAYBACK_RECORDED_VEHICLE_USING_AI - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"Any", :name=>"p4"}]}
-// not generating VEHICLE::GET_RANDOM_VEHICLE_MODEL_IN_MEMORY - {:return_type=>"void", :arguments=>[{:type=>"BOOL", :name=>"p0"}, {:type=>"Hash*", :name=>"modelHash"}, {:type=>"int*", :name=>"p2"}]}
-// not generating VEHICLE::GET_VEHICLE_EXTRA_COLOURS - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"pearlescentColor"}, {:type=>"int*", :name=>"wheelColor"}]}
 // not generating VEHICLE::_0xA4822F1CF23F4810 - {:return_type=>"BOOL", :arguments=>[{:type=>"Vector3*", :name=>"outVec"}, {:type=>"Any", :name=>"p1"}, {:type=>"Vector3*", :name=>"outVec1"}, {:type=>"Any", :name=>"p3"}, {:type=>"Any", :name=>"p4"}, {:type=>"Any", :name=>"p5"}, {:type=>"Any", :name=>"p6"}, {:type=>"Any", :name=>"p7"}, {:type=>"Any", :name=>"p8"}]}
-// not generating VEHICLE::GET_VEHICLE_TRAILER_VEHICLE - {:return_type=>"BOOL", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"Vehicle*", :name=>"trailer"}]}
-// not generating VEHICLE::GET_VEHICLE_MOD_COLOR_1 - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"paintType"}, {:type=>"int*", :name=>"color"}, {:type=>"int*", :name=>"p3"}]}
-// not generating VEHICLE::GET_VEHICLE_MOD_COLOR_2 - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"paintType"}, {:type=>"int*", :name=>"color"}]}
-// not generating VEHICLE::GET_VEHICLE_TYRE_SMOKE_COLOR - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}]}
-// not generating VEHICLE::GET_VEHICLE_COLOR - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}]}
-// not generating VEHICLE::_GET_VEHICLE_OWNER - {:return_type=>"BOOL", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"Entity*", :name=>"entity"}]}
-// not generating VEHICLE::_GET_VEHICLE_NEON_LIGHTS_COLOUR - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}]}
-// not generating OBJECT::DELETE_OBJECT - {:return_type=>"void", :arguments=>[{:type=>"Object*", :name=>"object"}]}
 // not generating OBJECT::_0x163F8B586BC95F2A - {:return_type=>"Any", :arguments=>[{:type=>"Any", :name=>"coords"}, {:type=>"float", :name=>"radius"}, {:type=>"Hash", :name=>"modelHash"}, {:type=>"float", :name=>"x"}, {:type=>"float", :name=>"y"}, {:type=>"float", :name=>"z"}, {:type=>"Vector3*", :name=>"p6"}, {:type=>"int", :name=>"p7"}]}
 // not generating OBJECT::GET_STATE_OF_CLOSEST_DOOR_OF_TYPE - {:return_type=>"void", :arguments=>[{:type=>"Hash", :name=>"type"}, {:type=>"float", :name=>"x"}, {:type=>"float", :name=>"y"}, {:type=>"float", :name=>"z"}, {:type=>"BOOL*", :name=>"locked"}, {:type=>"float*", :name=>"heading"}]}
 // not generating OBJECT::_0x589F80B325CC82C5 - {:return_type=>"BOOL", :arguments=>[{:type=>"float", :name=>"p0"}, {:type=>"float", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"Any", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}]}
@@ -70,14 +54,12 @@
 // not generating AI::TASK_SWEEP_AIM_POSITION - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"Any*", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}, {:type=>"Any", :name=>"p5"}, {:type=>"float", :name=>"p6"}, {:type=>"float", :name=>"p7"}, {:type=>"float", :name=>"p8"}, {:type=>"float", :name=>"p9"}, {:type=>"float", :name=>"p10"}]}
 // not generating GAMEPLAY::_0xB335F761606DB47C - {:return_type=>"BOOL", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any", :name=>"p2"}, {:type=>"BOOL", :name=>"p3"}]}
 // not generating GAMEPLAY::_GET_WEATHER_TYPE_TRANSITION - {:return_type=>"void", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"float*", :name=>"progress_or_time"}]}
-// not generating GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD - {:return_type=>"BOOL", :arguments=>[{:type=>"float", :name=>"x"}, {:type=>"float", :name=>"y"}, {:type=>"float", :name=>"z"}, {:type=>"float*", :name=>"groundZ"}, {:type=>"Any", :name=>"b"}]}
 // not generating GAMEPLAY::_0x8BDC7BFC57A81E76 - {:return_type=>"BOOL", :arguments=>[{:type=>"float", :name=>"X"}, {:type=>"float", :name=>"Y"}, {:type=>"float", :name=>"Z"}, {:type=>"float*", :name=>"p3"}, {:type=>"Vector3*", :name=>"p4"}]}
 // not generating GAMEPLAY::_0xF56DFB7B61BE7276 - {:return_type=>"BOOL", :arguments=>[{:type=>"float", :name=>"p0"}, {:type=>"float", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"float", :name=>"p4"}, {:type=>"float", :name=>"p5"}, {:type=>"float", :name=>"p6"}, {:type=>"float", :name=>"p7"}, {:type=>"float", :name=>"p8"}, {:type=>"float", :name=>"p9"}, {:type=>"float", :name=>"p10"}, {:type=>"float", :name=>"p11"}, {:type=>"Any*", :name=>"p12"}]}
 // not generating GAMEPLAY::SET_BIT - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"var"}, {:type=>"int", :name=>"bit"}]}
 // not generating GAMEPLAY::CLEAR_BIT - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"var"}, {:type=>"int", :name=>"bit"}]}
 // not generating GAMEPLAY::_0xF2F6A2FA49278625 - {:return_type=>"void", :arguments=>[{:type=>"float", :name=>"p0"}, {:type=>"float", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"float", :name=>"p4"}, {:type=>"float", :name=>"p5"}, {:type=>"float", :name=>"p6"}, {:type=>"float", :name=>"p7"}, {:type=>"float", :name=>"p8"}, {:type=>"Any*", :name=>"p9"}, {:type=>"Any*", :name=>"p10"}, {:type=>"Any*", :name=>"p11"}, {:type=>"Any*", :name=>"p12"}]}
 // not generating GAMEPLAY::REGISTER_SAVE_HOUSE - {:return_type=>"Any", :arguments=>[{:type=>"float", :name=>"p0"}, {:type=>"float", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}, {:type=>"Any", :name=>"p5"}, {:type=>"Any", :name=>"p6"}]}
-// not generating GAMEPLAY::GET_MODEL_DIMENSIONS - {:return_type=>"void", :arguments=>[{:type=>"Hash", :name=>"modelHash"}, {:type=>"Vector3*", :name=>"minimum"}, {:type=>"Vector3*", :name=>"maximum"}]}
 // not generating GAMEPLAY::STRING_TO_INT - {:return_type=>"BOOL", :arguments=>[{:type=>"char*", :name=>"string"}, {:type=>"int*", :name=>"outInteger"}]}
 // not generating GAMEPLAY::SET_BITS_IN_RANGE - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"var"}, {:type=>"int", :name=>"rangeStart"}, {:type=>"int", :name=>"rangeEnd"}, {:type=>"int", :name=>"p3"}]}
 // not generating GAMEPLAY::_0xA735353C77334EA0 - {:return_type=>"void", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
@@ -98,11 +80,6 @@
 // not generating AUDIO::PREPARE_SYNCHRONIZED_AUDIO_EVENT_FOR_SCENE - {:return_type=>"BOOL", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating CUTSCENE::REGISTER_ENTITY_FOR_CUTSCENE - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any", :name=>"p2"}, {:type=>"Any", :name=>"p3"}, {:type=>"Any", :name=>"p4"}]}
 // not generating CAM::IS_CAM_PLAYING_ANIM - {:return_type=>"BOOL", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}]}
-// not generating WEAPON::GET_CURRENT_PED_WEAPON - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Hash*", :name=>"weaponHash"}, {:type=>"BOOL", :name=>"p2"}]}
-// not generating WEAPON::GET_CURRENT_PED_VEHICLE_WEAPON - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Hash*", :name=>"weaponHash"}]}
-// not generating WEAPON::GET_AMMO_IN_CLIP - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Hash", :name=>"weaponHash"}, {:type=>"int*", :name=>"ammo"}]}
-// not generating WEAPON::GET_MAX_AMMO - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Hash", :name=>"weaponHash"}, {:type=>"int*", :name=>"ammo"}]}
-// not generating WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Vector3*", :name=>"coord"}]}
 // not generating WEAPON::GET_WEAPON_HUD_STATS - {:return_type=>"BOOL", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating WEAPON::GET_WEAPON_COMPONENT_HUD_STATS - {:return_type=>"BOOL", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating STREAMING::_0x95A7DABDDBB78AE7 - {:return_type=>"void", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
@@ -135,8 +112,6 @@
 // not generating UI::_0x8F08017F9D7C47BD - {:return_type=>"BOOL", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any", :name=>"p2"}]}
 // not generating UI::_0x052991E59076E4E4 - {:return_type=>"BOOL", :arguments=>[{:type=>"Hash", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating GRAPHICS::_0x6DD8F5AA635EB4B2 - {:return_type=>"void", :arguments=>[{:type=>"float", :name=>"p0"}, {:type=>"float", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"Any*", :name=>"p3"}]}
-// not generating GRAPHICS::GET_SCREEN_RESOLUTION - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"x"}, {:type=>"int*", :name=>"y"}]}
-// not generating GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"x"}, {:type=>"int*", :name=>"y"}]}
 // not generating GRAPHICS::_0x8A35C742130C6080 - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}]}
 // not generating GRAPHICS::_0x1A8E2C8B9CF4549C - {:return_type=>"void", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"scaleformPtr"}]}
@@ -507,17 +482,408 @@ static int call_limit = 1000;
   Vector3 r2;
   Vector3 r3;
   ENTITY::GET_ENTITY_MATRIX(a0,&r0,&r1,&r2,&r3);
-    mrb_value rarray = mrb_ary_new_capa(mrb,8);
+    mrb_value rarray = mrb_ary_new_capa(mrb,4);
   
   mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
   mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
-  mrb_ary_set(mrb,rarray,2,mrb_float_value(mrb,r2.x));
-  mrb_ary_set(mrb,rarray,3,mrb_float_value(mrb,r2.y));
-  mrb_ary_set(mrb,rarray,4,mrb_float_value(mrb,r2.z));
-  mrb_ary_set(mrb,rarray,5,mrb_float_value(mrb,r3.x));
-  mrb_ary_set(mrb,rarray,6,mrb_float_value(mrb,r3.y));
-  mrb_ary_set(mrb,rarray,7,mrb_float_value(mrb,r3.z));
+  mrb_value r2v = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Vector3"), 0, NULL);
+  (void)mrb_funcall(mrb, r2v, "__load", 3, mrb_float_value(mrb, r2.x), mrb_float_value(mrb, r2.y), mrb_float_value(mrb, r2.z));
+  mrb_ary_set(mrb,rarray,2,r2v);
+  mrb_value r3v = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Vector3"), 0, NULL);
+  (void)mrb_funcall(mrb, r3v, "__load", 3, mrb_float_value(mrb, r3.x), mrb_float_value(mrb, r3.y), mrb_float_value(mrb, r3.z));
+  mrb_ary_set(mrb,rarray,3,r3v);
   return rarray;
+
+}
+
+  mrb_value mruby__ENTITY__GET_ENTITY_QUATERNION(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  float r0;
+  float r1;
+  float r2;
+  float r3;
+  ENTITY::GET_ENTITY_QUATERNION(a0,&r0,&r1,&r2,&r3);
+    mrb_value rarray = mrb_ary_new_capa(mrb,4);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_float_value(mrb,r0));
+  mrb_ary_set(mrb,rarray,1,mrb_float_value(mrb,r1));
+  mrb_ary_set(mrb,rarray,2,mrb_float_value(mrb,r2));
+  mrb_ary_set(mrb,rarray,3,mrb_float_value(mrb,r3));
+  return rarray;
+
+}
+
+  mrb_value mruby__ENTITY__SET_OBJECT_AS_NO_LONGER_NEEDED(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  
+  ENTITY::SET_OBJECT_AS_NO_LONGER_NEEDED((Object*) &a0);
+  return mrb_nil_value();
+}
+
+  mrb_value mruby__OBJECT__DELETE_OBJECT(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  
+  OBJECT::DELETE_OBJECT((Object*) &a0);
+  return mrb_nil_value();
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_CUSTOM_PRIMARY_COLOUR(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  int r2;
+  VEHICLE::GET_VEHICLE_CUSTOM_PRIMARY_COLOUR(a0,&r0,&r1,&r2);
+    mrb_value rarray = mrb_ary_new_capa(mrb,3);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  mrb_ary_set(mrb,rarray,2,mrb_fixnum_value(r2));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_CUSTOM_SECONDARY_COLOUR(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  int r2;
+  VEHICLE::GET_VEHICLE_CUSTOM_SECONDARY_COLOUR(a0,&r0,&r1,&r2);
+    mrb_value rarray = mrb_ary_new_capa(mrb,3);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  mrb_ary_set(mrb,rarray,2,mrb_fixnum_value(r2));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_COLOURS(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  VEHICLE::GET_VEHICLE_COLOURS(a0,&r0,&r1);
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_LIGHTS_STATE(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  VEHICLE::GET_VEHICLE_LIGHTS_STATE(a0,&r0,&r1);
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE__GET_RANDOM_VEHICLE_MODEL_IN_MEMORY(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_bool a0;
+  mrb_get_args(mrb,"b",&a0);
+  Hash r0;
+  int r1;
+  VEHICLE::GET_RANDOM_VEHICLE_MODEL_IN_MEMORY(a0,&r0,&r1);
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_EXTRA_COLOURS(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  VEHICLE::GET_VEHICLE_EXTRA_COLOURS(a0,&r0,&r1);
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_TRAILER_VEHICLE(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Vehicle r0;
+  BOOL r = VEHICLE::GET_VEHICLE_TRAILER_VEHICLE(a0,&r0);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+      mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Vehicle"), 0, NULL);
+  (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+  return rret;
+
+  }
+
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_MOD_COLOR_1(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  int r2;
+  VEHICLE::GET_VEHICLE_MOD_COLOR_1(a0,&r0,&r1,&r2);
+    mrb_value rarray = mrb_ary_new_capa(mrb,3);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  mrb_ary_set(mrb,rarray,2,mrb_fixnum_value(r2));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_MOD_COLOR_2(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  VEHICLE::GET_VEHICLE_MOD_COLOR_2(a0,&r0,&r1);
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_TYRE_SMOKE_COLOR(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  int r2;
+  VEHICLE::GET_VEHICLE_TYRE_SMOKE_COLOR(a0,&r0,&r1,&r2);
+    mrb_value rarray = mrb_ary_new_capa(mrb,3);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  mrb_ary_set(mrb,rarray,2,mrb_fixnum_value(r2));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE__GET_VEHICLE_COLOR(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  int r2;
+  VEHICLE::GET_VEHICLE_COLOR(a0,&r0,&r1,&r2);
+    mrb_value rarray = mrb_ary_new_capa(mrb,3);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  mrb_ary_set(mrb,rarray,2,mrb_fixnum_value(r2));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE___GET_VEHICLE_NEON_LIGHTS_COLOUR(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  int r2;
+  VEHICLE::_GET_VEHICLE_NEON_LIGHTS_COLOUR(a0,&r0,&r1,&r2);
+    mrb_value rarray = mrb_ary_new_capa(mrb,3);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  mrb_ary_set(mrb,rarray,2,mrb_fixnum_value(r2));
+  return rarray;
+
+}
+
+  mrb_value mruby__VEHICLE___GET_VEHICLE_OWNER(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Entity r0;
+  BOOL r = VEHICLE::_GET_VEHICLE_OWNER(a0,&r0);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+      mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Entity"), 0, NULL);
+  (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+  return rret;
+
+  }
+
+}
+
+  mrb_value mruby__GRAPHICS__GET_SCREEN_RESOLUTION(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  
+  
+  int r0;
+  int r1;
+  GRAPHICS::GET_SCREEN_RESOLUTION(&r0,&r1);
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  return rarray;
+
+}
+
+  mrb_value mruby__GRAPHICS___GET_SCREEN_ACTIVE_RESOLUTION(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  
+  
+  int r0;
+  int r1;
+  GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(&r0,&r1);
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  return rarray;
+
+}
+
+  mrb_value mruby__GAMEPLAY__GET_MODEL_DIMENSIONS(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Vector3 r0;
+  Vector3 r1;
+  GAMEPLAY::GET_MODEL_DIMENSIONS(a0,&r0,&r1);
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+  
+  mrb_value r0v = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Vector3"), 0, NULL);
+  (void)mrb_funcall(mrb, r0v, "__load", 3, mrb_float_value(mrb, r0.x), mrb_float_value(mrb, r0.y), mrb_float_value(mrb, r0.z));
+  mrb_ary_set(mrb,rarray,0,r0v);
+  mrb_value r1v = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Vector3"), 0, NULL);
+  (void)mrb_funcall(mrb, r1v, "__load", 3, mrb_float_value(mrb, r1.x), mrb_float_value(mrb, r1.y), mrb_float_value(mrb, r1.z));
+  mrb_ary_set(mrb,rarray,1,r1v);
+  return rarray;
+
+}
+
+  mrb_value mruby__GAMEPLAY__GET_GROUND_Z_FOR_3D_COORD(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_float a0;
+  mrb_float a1;
+  mrb_float a2;
+  mrb_bool a3;
+  mrb_get_args(mrb,"fffb",&a0,&a1,&a2,&a3);
+  float r0;
+  GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(a0,a1,a2,&r0,a3);
+  return mrb_float_value(mrb,r0);
+}
+
+  mrb_value mruby__WEAPON__GET_CURRENT_PED_WEAPON(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_bool a1;
+  mrb_get_args(mrb,"ib",&a0,&a1);
+  Hash r0;
+  BOOL r = WEAPON::GET_CURRENT_PED_WEAPON(a0,&r0,a1);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+      mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Hash"), 0, NULL);
+  (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+  return rret;
+
+  }
+
+}
+
+  mrb_value mruby__WEAPON__GET_CURRENT_PED_VEHICLE_WEAPON(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Hash r0;
+  BOOL r = WEAPON::GET_CURRENT_PED_VEHICLE_WEAPON(a0,&r0);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+      mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Hash"), 0, NULL);
+  (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+  return rret;
+
+  }
+
+}
+
+  mrb_value mruby__WEAPON__GET_AMMO_IN_CLIP(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_int a1;
+  mrb_get_args(mrb,"ii",&a0,&a1);
+  int r0;
+  BOOL r = WEAPON::GET_AMMO_IN_CLIP(a0,a1,&r0);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+    return mrb_fixnum_value(r0);
+  }
+
+}
+
+  mrb_value mruby__WEAPON__GET_MAX_AMMO(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_int a1;
+  mrb_get_args(mrb,"ii",&a0,&a1);
+  int r0;
+  BOOL r = WEAPON::GET_MAX_AMMO(a0,a1,&r0);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+    return mrb_fixnum_value(r0);
+  }
+
+}
+
+  mrb_value mruby__WEAPON__GET_PED_LAST_WEAPON_IMPACT_COORD(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Vector3 r0;
+  BOOL r = WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(a0,&r0);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+      mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Vector3"), 0, NULL);
+  (void)mrb_funcall(mrb, rret, "__load", 3, mrb_float_value(mrb,r0.x), mrb_float_value(mrb,r0.y), mrb_float_value(mrb,r0.z));
+  return rret;
+
+  }
 
 }
 
@@ -43963,6 +44329,31 @@ void mruby_install_natives(mrb_state *mrb) {
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PARACHUTE_PACK_TINT_INDEX", mruby__PLAYER__GET_PLAYER_PARACHUTE_PACK_TINT_INDEX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR", mruby__PLAYER__GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_entity, "GET_ENTITY_MATRIX", mruby__ENTITY__GET_ENTITY_MATRIX, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_entity, "GET_ENTITY_QUATERNION", mruby__ENTITY__GET_ENTITY_QUATERNION, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_entity, "SET_OBJECT_AS_NO_LONGER_NEEDED", mruby__ENTITY__SET_OBJECT_AS_NO_LONGER_NEEDED, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_object, "DELETE_OBJECT", mruby__OBJECT__DELETE_OBJECT, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_CUSTOM_PRIMARY_COLOUR", mruby__VEHICLE__GET_VEHICLE_CUSTOM_PRIMARY_COLOUR, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_CUSTOM_SECONDARY_COLOUR", mruby__VEHICLE__GET_VEHICLE_CUSTOM_SECONDARY_COLOUR, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_COLOURS", mruby__VEHICLE__GET_VEHICLE_COLOURS, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_LIGHTS_STATE", mruby__VEHICLE__GET_VEHICLE_LIGHTS_STATE, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_RANDOM_VEHICLE_MODEL_IN_MEMORY", mruby__VEHICLE__GET_RANDOM_VEHICLE_MODEL_IN_MEMORY, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_EXTRA_COLOURS", mruby__VEHICLE__GET_VEHICLE_EXTRA_COLOURS, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_TRAILER_VEHICLE", mruby__VEHICLE__GET_VEHICLE_TRAILER_VEHICLE, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_MOD_COLOR_1", mruby__VEHICLE__GET_VEHICLE_MOD_COLOR_1, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_MOD_COLOR_2", mruby__VEHICLE__GET_VEHICLE_MOD_COLOR_2, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_TYRE_SMOKE_COLOR", mruby__VEHICLE__GET_VEHICLE_TYRE_SMOKE_COLOR, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "GET_VEHICLE_COLOR", mruby__VEHICLE__GET_VEHICLE_COLOR, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "_GET_VEHICLE_NEON_LIGHTS_COLOUR", mruby__VEHICLE___GET_VEHICLE_NEON_LIGHTS_COLOUR, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_vehicle, "_GET_VEHICLE_OWNER", mruby__VEHICLE___GET_VEHICLE_OWNER, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_graphics, "GET_SCREEN_RESOLUTION", mruby__GRAPHICS__GET_SCREEN_RESOLUTION, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, module_graphics, "_GET_SCREEN_ACTIVE_RESOLUTION", mruby__GRAPHICS___GET_SCREEN_ACTIVE_RESOLUTION, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, module_gameplay, "GET_MODEL_DIMENSIONS", mruby__GAMEPLAY__GET_MODEL_DIMENSIONS, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_gameplay, "GET_GROUND_Z_FOR_3D_COORD", mruby__GAMEPLAY__GET_GROUND_Z_FOR_3D_COORD, MRB_ARGS_REQ(4));
+  mrb_define_class_method(mrb, module_weapon, "GET_CURRENT_PED_WEAPON", mruby__WEAPON__GET_CURRENT_PED_WEAPON, MRB_ARGS_REQ(2));
+  mrb_define_class_method(mrb, module_weapon, "GET_CURRENT_PED_VEHICLE_WEAPON", mruby__WEAPON__GET_CURRENT_PED_VEHICLE_WEAPON, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_weapon, "GET_AMMO_IN_CLIP", mruby__WEAPON__GET_AMMO_IN_CLIP, MRB_ARGS_REQ(2));
+  mrb_define_class_method(mrb, module_weapon, "GET_MAX_AMMO", mruby__WEAPON__GET_MAX_AMMO, MRB_ARGS_REQ(2));
+  mrb_define_class_method(mrb, module_weapon, "GET_PED_LAST_WEAPON_IMPACT_COORD", mruby__WEAPON__GET_PED_LAST_WEAPON_IMPACT_COORD, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PED", mruby__PLAYER__GET_PLAYER_PED, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PED_SCRIPT_INDEX", mruby__PLAYER__GET_PLAYER_PED_SCRIPT_INDEX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "SET_PLAYER_MODEL", mruby__PLAYER__SET_PLAYER_MODEL, MRB_ARGS_REQ(2));
@@ -48815,4 +49206,4 @@ mrb_value mruby__gtav__get_call_limit(mrb_state *mrb, mrb_value self) {
   return mrb_fixnum_value(call_limit);
 }
 
-// generated 4843 out of 5180 native functions (337 ungenerated)
+// generated 4868 out of 5180 native functions (312 ungenerated)

@@ -31,8 +31,8 @@ module GTAV
 
   # gets called every engine tick by script.cpp
   def self.tick(*args)
+    tick_start = self.time_usec
     begin
-      tick_start = self.time_usec
 
       # disable GC during ticks to avoid mid-execution lag
       GC.disable
@@ -42,13 +42,13 @@ module GTAV
 
       @@ticks += 1
 
-      @@metrics.instrument_tick(time_usec - tick_start) if @@metrics
     rescue => exception
       self.on_error(exception)
     ensure
       # re-enable GC allowing it to run normally
-      GC.enable
+      GC.enable# if @@ticks % 60 == 1
     end
+    @@metrics.instrument_tick(time_usec - tick_start) if @@metrics
   end
 
   def self.tick_fibers
@@ -71,9 +71,9 @@ module GTAV
 
         # allow fiber to execute until it calls GTAV.wait(ms)
         # the return value of fiber.resume is the ms arg to wait()
-        fiber_start = self.time_usec
+        time_start, objs_start = self.time_usec, self.object_count
         wait_ms = fiber.resume
-        fiber_end = self.time_usec
+        time_end = self.time_usec
 
         if wait_ms
           # schedule the fiber's next tick time
@@ -82,7 +82,7 @@ module GTAV
           # fiber dead
         end
 
-        @@metrics.instrument_fiber(name,fiber_end - fiber_start, CALL_LIMIT - GTAV.get_call_limit) if @@metrics
+        @@metrics.instrument_fiber(name,time_end - time_start, CALL_LIMIT - self.get_call_limit, self.object_count - objs_start) if @@metrics
 
       rescue => ex
 
@@ -111,6 +111,14 @@ module GTAV
       @@fibers_names = @@fibers.keys
     end
     @@fibers_names
+  end
+
+  @@_object_count = {}
+  def self.object_count
+    return 0
+    # DO NOT USE: leaks memory like mad
+    # ObjectSpace.count_objects(@@_object_count)
+    # @@_object_count[:TOTAL] - @@_object_count[:FREE]
   end
 
 end

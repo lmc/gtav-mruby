@@ -7,11 +7,12 @@ GTAV.register(:DebugMetrics) do
   @has_logger = GTAV.respond_to?(:logger_buffer)
   raise "No runtime metrics available (load runtime/runtime_metrics.rb)" if !@has_metrics
 
-  DISPLAY_MODES = [:none,:time,:calls,:all]
+  DISPLAY_MODES = [:none,:time,:calls,:objects,:all]
   DISPLAY_WIDTHS = {
     :none => [0.2,[1.0]],
     :time => [0.2,[0.5,0.25,0.25]],
     :calls => [0.2,[0.5,0.25,0.25]],
+    :objects => [0.2,[0.5,0.25,0.25]],
     :all => [0.3,[0.4,0.15,0.15,0.15,0.15]],
   }
   @mode = :time
@@ -31,17 +32,18 @@ GTAV.register(:DebugMetrics) do
     pco: 0.005,
     pci: 0.005,
     pro: 0.005,
-    header_row_text: METRICS_HEADER_TEXT_STYLE,
-    body_row_text: METRICS_VALUE_TEXT_STYLE,
+    cell_text: METRICS_HEADER_TEXT_STYLE,
+    # header_row_text: METRICS_HEADER_TEXT_STYLE,
+    # body_row_text: METRICS_VALUE_TEXT_STYLE,
   )
 
-  def METRICS_TABLE.text_class_for(ri,ci)
-    if ri == 0 || ci == 0
-      METRICS_HEADER_TEXT_STYLE
-    else
-      METRICS_VALUE_TEXT_STYLE
-    end
-  end
+  # def METRICS_TABLE.text_class_for(ri,ci)
+  #   if ri == 0 || ci == 0
+  #     METRICS_HEADER_TEXT_STYLE
+  #   else
+  #     METRICS_VALUE_TEXT_STYLE
+  #   end
+  # end
 
   LOGGER_TEXT_STYLE = UiStyledText.new(font: 0, scale2: 0.3)
   LOGGER_TABLE = UiTable.new(
@@ -89,6 +91,7 @@ GTAV.register(:DebugMetrics) do
     METRICS_TABLE.data[0] = ["Fiber Name"]
     METRICS_TABLE.data[0] += ["Avg. Time","Max Time"] if [:time,:all].include?(@mode)
     METRICS_TABLE.data[0] += ["Avg. Calls","Max Calls"] if [:calls,:all].include?(@mode)
+    METRICS_TABLE.data[0] += ["Avg. Objs","Max Objs"] if [:objects,:all].include?(@mode)
     GTAV.fiber_names.each_with_index do |name,i|
       METRICS_TABLE.data[i + 1] = []
       update_data_once!
@@ -104,12 +107,17 @@ GTAV.register(:DebugMetrics) do
     row = []
     row << "#{idx}: #{name.to_s}"
     if [:time,:all].include?(@mode)
-      tick_times = GTAV.metrics["fiber.#{name}.tick_times"].to_a
+      tick_times = GTAV.metrics["fiber.#{name}.tick_times"].array
       row << "#{sprintf("%.3f",avg(tick_times,0.0) * 1000.0)}ms"
       row << "#{sprintf("%.3f",max(tick_times,0.0) * 1000.0)}ms"
     end
     if [:calls,:all].include?(@mode)
-      calls = GTAV.metrics["fiber.#{name}.calls"].to_a
+      calls = GTAV.metrics["fiber.#{name}.calls"].array
+      row << avg(calls).to_i.to_s
+      row << max(calls).to_s
+    end
+    if [:objects,:all].include?(@mode)
+      calls = GTAV.metrics["fiber.#{name}.objects"].array
       row << avg(calls).to_i.to_s
       row << max(calls).to_s
     end
@@ -120,7 +128,7 @@ GTAV.register(:DebugMetrics) do
 
   def update_totals!
     total_last_calls = -1
-    times = GTAV.metrics["runtime.tick_times"].to_a
+    times = GTAV.metrics["runtime.tick_times"].array
     METRICS_TABLE.data[-1] = ["GTAV.tick Total"]
     if [:time,:all].include?(@mode)
       METRICS_TABLE.data[-1] += [
@@ -137,7 +145,7 @@ GTAV.register(:DebugMetrics) do
   end
 
   def draw_tick_chart!
-    TICK_CHART.data = GTAV.metrics["runtime.tick_times"].to_a
+    TICK_CHART.data = GTAV.metrics["runtime.tick_times"].array
     TICK_CHART.draw
   end
 
@@ -146,14 +154,14 @@ GTAV.register(:DebugMetrics) do
   end
 
   def draw_logger!
-    LOGGER_TABLE.data = GTAV.logger_buffer.to_a.last(5).map{|b| [b]}
+    LOGGER_TABLE.data = GTAV.logger_buffer.array.last(5).map{|b| [b]}
     LOGGER_TABLE.draw
   end
 
   update_all_data!
 
   loop do
-    if GTAV.is_key_just_up(0x79) # F10
+    if GTAV.is_key_just_up(Key::F10) # F10
       mindex = DISPLAY_MODES.index(@mode) + 1
       mindex = 0 if mindex >= DISPLAY_MODES.size
       @mode = DISPLAY_MODES[mindex]

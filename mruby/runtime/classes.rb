@@ -56,6 +56,9 @@ class Queue
   def to_a
     @array.to_a
   end
+  def array
+    @array
+  end
 end
 
 class QueueSet < Queue
@@ -186,15 +189,15 @@ class UiBarChart < Struct.new(:x, :y, :w, :h, :p, :limits, :bw, :data)
     data.each_with_index do |d,i|
       val = (d + 0.0) / ym
       if d > ym
-        rgba = [255,0,0,127]
+        r,g,b,a = 255,0,0,127
       elsif d >= 0.004
-        rgba = [255,255,0,127]
+        r,g,b,a = 255,255,0,127
       else
-        rgba = [0,255,0,127] 
+        r,g,b,a = 0,255,0,127
       end
       dh = ct + (val * h)
       dy = cb - (val * (h * 0.5))
-      GRAPHICS::DRAW_RECT(x + (bw * i),dy,bw,dh,*rgba)
+      GRAPHICS::DRAW_RECT(x + (bw * i),dy,bw,dh,r,g,b,a)
     end
   end
 end

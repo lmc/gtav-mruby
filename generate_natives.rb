@@ -106,7 +106,7 @@ def mrb_value_defines(arguments)
 end
 
 def mrb_type_and_char(arg,i)
-  case arg[:type]
+  case arg[:type].to_s
   when "char*"
     [["char* a#{i};","int a#{i}_size;"],"s",["a#{i}"],["&a#{i}, &a#{i}_size"]]
   when "BOOL"
@@ -154,7 +154,7 @@ def define_native_multireturn(mname,fname,in_types,out_types,assign,cargs,assign
     in_type_vars << tt[3].join(",")
     in_type_chars << tt[1]
     tt[0].join("\n  ")
-  }.join
+  }.join("\n  ")
 
   out_type_defs = Array(out_types).each_with_index.map{|t,i|
     case t
@@ -164,6 +164,8 @@ def define_native_multireturn(mname,fname,in_types,out_types,assign,cargs,assign
       "float r#{i};"
     when :char
       "char* r#{i};"
+    when :BOOL
+      "BOOL r#{i};"
     else
       "#{t} r#{i};"
     end
@@ -183,13 +185,19 @@ def define_native_multireturn(mname,fname,in_types,out_types,assign,cargs,assign
         "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_fixnum_value(r#{i}));"
       when :float
         "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_float_value(mrb,r#{i}));"
+      when :BOOL
+        "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_bool_value(r#{i}));"
       when :Vector3
         s = []
-        s << "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_float_value(mrb,r#{i}.x));"
-        rarray_i += 1
-        s << "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_float_value(mrb,r#{i}.y));"
-        rarray_i += 1
-        s << "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_float_value(mrb,r#{i}.z));"
+        s << "mrb_value r#{i}v = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, \"GTAV\"), \"Vector3\"), 0, NULL);"
+        s << "(void)mrb_funcall(mrb, r#{i}v, \"__load\", 3, mrb_float_value(mrb, r#{i}.x), mrb_float_value(mrb, r#{i}.y), mrb_float_value(mrb, r#{i}.z));"
+        s << "mrb_ary_set(mrb,rarray,#{rarray_i},r#{i}v);"
+        # puts s
+        # s << "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_float_value(mrb,r#{i}.x));"
+        # rarray_i += 1
+        # s << "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_float_value(mrb,r#{i}.y));"
+        # rarray_i += 1
+        # s << "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_float_value(mrb,r#{i}.z));"
         s.join("\n  ")
       else
         "mrb_ary_set(mrb,rarray,#{rarray_i},mrb_fixnum_value(r#{i}));"
@@ -209,6 +217,14 @@ CPP
       "return mrb_fixnum_value(r0);"
     when :float
       "return mrb_float_value(mrb,r0);"
+    when :BOOL
+      "return mrb_bool_value(r0);"
+    when :Vector3
+    <<-CPP
+  mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "#{out_types}"), 0, NULL);
+  (void)mrb_funcall(mrb, rret, "__load", 3, mrb_float_value(mrb,r0.x), mrb_float_value(mrb,r0.y), mrb_float_value(mrb,r0.z));
+  return rret;
+CPP
     else
       assign_return = nil
       <<-CPP
@@ -229,12 +245,19 @@ CPP
 CPP
   end
 
+  if return_nil_if === true
+    return_statement = "return mrb_nil_value();"
+  end
+
+  mrb_get_args = "mrb_get_args(mrb,\"#{in_type_chars}\",#{in_type_vars.join(",")});"
+  mrb_get_args = "" if in_types.size == 0
+
   $defined_functions["#{mname}::#{fname}"] = true
   $mrb_defines << "mrb_define_class_method(mrb, module_#{mname.downcase}, \"#{fname}\", #{cname}, #{mrb_args_def});"
   $function_bodies << <<-CPP
   mrb_value #{cname}(mrb_state *mrb, mrb_value self) {#{WITH_TICK_CHECK ? tick_check : ""}
   #{in_type_assigns}
-  mrb_get_args(mrb,"#{in_type_chars}",#{in_type_vars.join(",")});
+  #{mrb_get_args}
   #{out_type_defs}
   #{assign}#{mname}::#{fname}(#{cargs});
   #{return_statement}
@@ -272,7 +295,38 @@ define_native_multireturn("PLAYER","GET_PLAYER_PARACHUTE_TINT_INDEX",[:Player],:
 define_native_multireturn("PLAYER","GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX",[:Player],:int,nil,"a0,&r0",nil,"r0 == -1")
 define_native_multireturn("PLAYER","GET_PLAYER_PARACHUTE_PACK_TINT_INDEX",[:Player],:int,nil,"a0,&r0",nil,"r0 == -1")
 define_native_multireturn("PLAYER","GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR",[:Player],[:int,:int,:int],nil,"a0,&r0,&r1,&r2",nil,nil)
-define_native_multireturn("ENTITY","GET_ENTITY_MATRIX",[:Entity],[:Vector3,:Vector3,:Vector3,:Vector3],nil,"a0,&r0,&r1,&r2,&r3",nil,nil)
+
+define_native_multireturn("ENTITY","GET_ENTITY_MATRIX",[:Entity],[:Any,:Any,:Vector3,:Vector3],nil,"a0,&r0,&r1,&r2,&r3",nil,nil)
+define_native_multireturn("ENTITY","GET_ENTITY_QUATERNION",[:Entity],[:float,:float,:float,:float],nil,"a0,&r0,&r1,&r2,&r3",nil,nil)
+
+define_native_multireturn("ENTITY","SET_OBJECT_AS_NO_LONGER_NEEDED",[:Entity],[],nil,"(Object*) &a0",nil,true)
+define_native_multireturn("OBJECT","DELETE_OBJECT",[:Entity],[],nil,"(Object*) &a0",nil,true)
+
+define_native_multireturn("VEHICLE","GET_VEHICLE_CUSTOM_PRIMARY_COLOUR",[:Vehicle],[:int,:int,:int],nil,"a0,&r0,&r1,&r2",nil,nil)
+define_native_multireturn("VEHICLE","GET_VEHICLE_CUSTOM_SECONDARY_COLOUR",[:Vehicle],[:int,:int,:int],nil,"a0,&r0,&r1,&r2",nil,nil)
+define_native_multireturn("VEHICLE","GET_VEHICLE_COLOURS",[:Vehicle],[:int,:int],nil,"a0,&r0,&r1",nil,nil)
+define_native_multireturn("VEHICLE","GET_VEHICLE_LIGHTS_STATE",[:Vehicle],[:int,:int],nil,"a0,&r0,&r1",nil,nil)
+define_native_multireturn("VEHICLE","GET_RANDOM_VEHICLE_MODEL_IN_MEMORY",[:BOOL],[:Hash,:int],nil,"a0,&r0,&r1",nil,nil)
+define_native_multireturn("VEHICLE","GET_VEHICLE_EXTRA_COLOURS",[:Vehicle],[:int,:int],nil,"a0,&r0,&r1",nil,nil)
+define_native_multireturn("VEHICLE","GET_VEHICLE_TRAILER_VEHICLE",[:Vehicle],:Vehicle,"BOOL","a0,&r0",nil,"!r")
+define_native_multireturn("VEHICLE","GET_VEHICLE_MOD_COLOR_1",[:Vehicle],[:int,:int,:int],nil,"a0,&r0,&r1,&r2",nil,nil)
+define_native_multireturn("VEHICLE","GET_VEHICLE_MOD_COLOR_2",[:Vehicle],[:int,:int],nil,"a0,&r0,&r1",nil,nil)
+define_native_multireturn("VEHICLE","GET_VEHICLE_TYRE_SMOKE_COLOR",[:Vehicle],[:int,:int,:int],nil,"a0,&r0,&r1,&r2",nil,nil)
+define_native_multireturn("VEHICLE","GET_VEHICLE_COLOR",[:Vehicle],[:int,:int,:int],nil,"a0,&r0,&r1,&r2",nil,nil)
+define_native_multireturn("VEHICLE","_GET_VEHICLE_NEON_LIGHTS_COLOUR",[:Vehicle],[:int,:int,:int],nil,"a0,&r0,&r1,&r2",nil,nil)
+define_native_multireturn("VEHICLE","_GET_VEHICLE_OWNER",[:Vehicle],:Entity,"BOOL","a0,&r0",nil,"!r")
+
+define_native_multireturn("GRAPHICS","GET_SCREEN_RESOLUTION",[],[:int,:int],nil,"&r0,&r1",nil,nil)
+define_native_multireturn("GRAPHICS","_GET_SCREEN_ACTIVE_RESOLUTION",[],[:int,:int],nil,"&r0,&r1",nil,nil)
+
+define_native_multireturn("GAMEPLAY","GET_MODEL_DIMENSIONS",[:Hash],[:Vector3,:Vector3],nil,"a0,&r0,&r1",nil,nil)
+define_native_multireturn("GAMEPLAY","GET_GROUND_Z_FOR_3D_COORD",[:float,:float,:float,:BOOL],:float,nil,"a0,a1,a2,&r0,a3",nil,nil)
+
+define_native_multireturn("WEAPON","GET_CURRENT_PED_WEAPON",[:Ped,:BOOL],:Hash,"BOOL","a0,&r0,a1",nil,"!r")
+define_native_multireturn("WEAPON","GET_CURRENT_PED_VEHICLE_WEAPON",[:Ped],:Hash,"BOOL","a0,&r0",nil,"!r")
+define_native_multireturn("WEAPON","GET_AMMO_IN_CLIP",[:Ped,:Hash],:int,"BOOL","a0,a1,&r0",nil,"!r")
+define_native_multireturn("WEAPON","GET_MAX_AMMO",[:Ped,:Hash],:int,"BOOL","a0,a1,&r0",nil,"!r")
+define_native_multireturn("WEAPON","GET_PED_LAST_WEAPON_IMPACT_COORD",[:Ped],:Vector3,"BOOL","a0,&r0",nil,"!r")
 
 natives.each_pair do |mname,namespace|
   module_defines << "struct RClass *module_#{mname.downcase} = mrb_define_module(mrb, \"#{mname}\");"
