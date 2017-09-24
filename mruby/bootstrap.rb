@@ -6,19 +6,15 @@ module GTAV
     def initialize(*args)
       __load(args)
     end
-  end
 
-  class Vector3 < BoxedObject
     def __load(*value)
       self.replace(value)
     end
   end
 
-  class BoxedObjectInt < BoxedObject
-    def __load(value)
-      self.replace([value])
-    end
-  end
+  class Vector3 < BoxedObject; end
+
+  class BoxedObjectInt < BoxedObject; end
 
   class Any < BoxedObjectInt; end
 
@@ -42,7 +38,6 @@ module GTAV
   end
 
   def self.on_error(exception)
-    # log "#{exception.inspect}", :error
     log "#{exception.class} - #{exception.message}", :error
     exception.backtrace.each do |bt|
       log "  #{bt}", :error
@@ -68,6 +63,13 @@ module GTAV
 
   def self.log(*args)
     puts "GTAV.log - #{args.inspect}"
+  end
+
+  # create empty file called `enable-socket` in this dir, then override this method
+  # the socket is read immediately on accept, and provided as a string in the `input` arg
+  # return a string to have it written to the socket before it's closed
+  def self.on_socket(input)
+    return "GTAV.on_socket()"
   end
 
 end

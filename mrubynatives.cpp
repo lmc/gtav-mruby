@@ -1,14 +1,5 @@
-// not generating PLAYER::GET_PLAYER_RGB_COLOUR - {:return_type=>"void", :arguments=>[{:type=>"Player", :name=>"player"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}]}
-// not generating PLAYER::GET_PLAYER_TARGET_ENTITY - {:return_type=>"BOOL", :arguments=>[{:type=>"Player", :name=>"player"}, {:type=>"Entity*", :name=>"entity"}]}
-// not generating PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT - {:return_type=>"BOOL", :arguments=>[{:type=>"Player", :name=>"player"}, {:type=>"Entity*", :name=>"entity"}]}
-// not generating PLAYER::GET_PLAYER_PARACHUTE_TINT_INDEX - {:return_type=>"void", :arguments=>[{:type=>"Player", :name=>"player"}, {:type=>"int*", :name=>"tintIndex"}]}
-// not generating PLAYER::GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX - {:return_type=>"void", :arguments=>[{:type=>"Player", :name=>"player"}, {:type=>"int*", :name=>"index"}]}
-// not generating PLAYER::GET_PLAYER_PARACHUTE_PACK_TINT_INDEX - {:return_type=>"void", :arguments=>[{:type=>"Player", :name=>"player"}, {:type=>"int*", :name=>"tintIndex"}]}
-// not generating PLAYER::GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR - {:return_type=>"void", :arguments=>[{:type=>"Player", :name=>"player"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}]}
-// not generating ENTITY::GET_ENTITY_MATRIX - {:return_type=>"void", :arguments=>[{:type=>"Entity", :name=>"entity"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"Vector3*", :name=>"p3"}, {:type=>"Vector3*", :name=>"p4"}]}
 // not generating ENTITY::GET_ENTITY_QUATERNION - {:return_type=>"void", :arguments=>[{:type=>"Entity", :name=>"entity"}, {:type=>"float*", :name=>"x"}, {:type=>"float*", :name=>"y"}, {:type=>"float*", :name=>"z"}, {:type=>"float*", :name=>"w"}]}
 // not generating ENTITY::GET_ENTITY_SCRIPT - {:return_type=>"char*", :arguments=>[{:type=>"Entity", :name=>"entity"}, {:type=>"Any*", :name=>"script"}]}
-// not generating ENTITY::GET_OBJECT_INDEX_FROM_ENTITY_INDEX - {:return_type=>"Object", :arguments=>[{:type=>"Entity", :name=>"entity"}]}
 // not generating ENTITY::PLAY_SYNCHRONIZED_MAP_ENTITY_ANIM - {:return_type=>"BOOL", :arguments=>[{:type=>"float", :name=>"p0"}, {:type=>"float", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"Any", :name=>"p4"}, {:type=>"Any", :name=>"p5"}, {:type=>"Any*", :name=>"p6"}, {:type=>"Any*", :name=>"p7"}, {:type=>"float", :name=>"p8"}, {:type=>"float", :name=>"p9"}, {:type=>"Any", :name=>"p10"}, {:type=>"float", :name=>"p11"}]}
 // not generating ENTITY::FIND_ANIM_EVENT_PHASE - {:return_type=>"BOOL", :arguments=>[{:type=>"char*", :name=>"animDictionary"}, {:type=>"char*", :name=>"animName"}, {:type=>"char*", :name=>"p2"}, {:type=>"Any*", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}]}
 // not generating ENTITY::SET_OBJECT_AS_NO_LONGER_NEEDED - {:return_type=>"void", :arguments=>[{:type=>"Object*", :name=>"object"}]}
@@ -58,10 +49,7 @@
 // not generating VEHICLE::GET_VEHICLE_COLOR - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}]}
 // not generating VEHICLE::_GET_VEHICLE_OWNER - {:return_type=>"BOOL", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"Entity*", :name=>"entity"}]}
 // not generating VEHICLE::_GET_VEHICLE_NEON_LIGHTS_COLOUR - {:return_type=>"void", :arguments=>[{:type=>"Vehicle", :name=>"vehicle"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}]}
-// not generating OBJECT::CREATE_OBJECT - {:return_type=>"Object", :arguments=>[{:type=>"Hash", :name=>"modelHash"}, {:type=>"float", :name=>"x"}, {:type=>"float", :name=>"y"}, {:type=>"float", :name=>"z"}, {:type=>"BOOL", :name=>"networkHandle"}, {:type=>"BOOL", :name=>"createHandle"}, {:type=>"BOOL", :name=>"dynamic"}]}
-// not generating OBJECT::CREATE_OBJECT_NO_OFFSET - {:return_type=>"Object", :arguments=>[{:type=>"Hash", :name=>"objectHash"}, {:type=>"float", :name=>"posX"}, {:type=>"float", :name=>"posY"}, {:type=>"float", :name=>"posZ"}, {:type=>"BOOL", :name=>"networkHandle"}, {:type=>"BOOL", :name=>"createHandle"}, {:type=>"BOOL", :name=>"dynamic"}]}
 // not generating OBJECT::DELETE_OBJECT - {:return_type=>"void", :arguments=>[{:type=>"Object*", :name=>"object"}]}
-// not generating OBJECT::GET_CLOSEST_OBJECT_OF_TYPE - {:return_type=>"Object", :arguments=>[{:type=>"float", :name=>"x"}, {:type=>"float", :name=>"y"}, {:type=>"float", :name=>"z"}, {:type=>"float", :name=>"radius"}, {:type=>"Hash", :name=>"modelHash"}, {:type=>"BOOL", :name=>"isMission"}, {:type=>"BOOL", :name=>"p6"}, {:type=>"BOOL", :name=>"p7"}]}
 // not generating OBJECT::_0x163F8B586BC95F2A - {:return_type=>"Any", :arguments=>[{:type=>"Any", :name=>"coords"}, {:type=>"float", :name=>"radius"}, {:type=>"Hash", :name=>"modelHash"}, {:type=>"float", :name=>"x"}, {:type=>"float", :name=>"y"}, {:type=>"float", :name=>"z"}, {:type=>"Vector3*", :name=>"p6"}, {:type=>"int", :name=>"p7"}]}
 // not generating OBJECT::GET_STATE_OF_CLOSEST_DOOR_OF_TYPE - {:return_type=>"void", :arguments=>[{:type=>"Hash", :name=>"type"}, {:type=>"float", :name=>"x"}, {:type=>"float", :name=>"y"}, {:type=>"float", :name=>"z"}, {:type=>"BOOL*", :name=>"locked"}, {:type=>"float*", :name=>"heading"}]}
 // not generating OBJECT::_0x589F80B325CC82C5 - {:return_type=>"BOOL", :arguments=>[{:type=>"float", :name=>"p0"}, {:type=>"float", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"Any", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}]}
@@ -149,8 +137,6 @@
 // not generating GRAPHICS::_0x6DD8F5AA635EB4B2 - {:return_type=>"void", :arguments=>[{:type=>"float", :name=>"p0"}, {:type=>"float", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"Any*", :name=>"p3"}]}
 // not generating GRAPHICS::GET_SCREEN_RESOLUTION - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"x"}, {:type=>"int*", :name=>"y"}]}
 // not generating GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"x"}, {:type=>"int*", :name=>"y"}]}
-// not generating GRAPHICS::_WORLD3D_TO_SCREEN2D - {:return_type=>"BOOL", :arguments=>[{:type=>"float", :name=>"x3d"}, {:type=>"float", :name=>"y3d"}, {:type=>"float", :name=>"z3d"}, {:type=>"float*", :name=>"x2d"}, {:type=>"float*", :name=>"y2d"}]}
-// not generating GRAPHICS::CREATE_TRACKED_POINT - {:return_type=>"Object", :arguments=>[]}
 // not generating GRAPHICS::_0x8A35C742130C6080 - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}]}
 // not generating GRAPHICS::_0x1A8E2C8B9CF4549C - {:return_type=>"void", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"scaleformPtr"}]}
@@ -238,7 +224,6 @@
 // not generating NETWORK::NETWORK_GET_DESTROYER_OF_NETWORK_ID - {:return_type=>"Any", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating NETWORK::_0x4CACA84440FA26F6 - {:return_type=>"BOOL", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}]}
 // not generating NETWORK::NETWORK_GET_ENTITY_KILLER_OF_PLAYER - {:return_type=>"Entity", :arguments=>[{:type=>"Player", :name=>"player"}, {:type=>"Hash*", :name=>"weaponHash"}]}
-// not generating NETWORK::NET_TO_OBJ - {:return_type=>"Object", :arguments=>[{:type=>"int", :name=>"netHandle"}]}
 // not generating NETWORK::NETWORK_HANDLE_FROM_USER_ID - {:return_type=>"void", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any", :name=>"p2"}]}
 // not generating NETWORK::NETWORK_HANDLE_FROM_MEMBER_ID - {:return_type=>"void", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any", :name=>"p2"}]}
 // not generating NETWORK::NETWORK_HANDLE_FROM_PLAYER - {:return_type=>"void", :arguments=>[{:type=>"Player", :name=>"player"}, {:type=>"int*", :name=>"handle"}, {:type=>"int", :name=>"p2"}]}
@@ -379,6 +364,162 @@ extern "C" {
 
 static int call_limit_enabled = 0;
 static int call_limit = 1000;
+
+  mrb_value mruby__GRAPHICS___WORLD3D_TO_SCREEN2D(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+      mrb_float a0;
+  mrb_float a1;
+  mrb_float a2;
+  mrb_get_args(mrb,"fff",&a0,&a1,&a2);
+
+  float r0;
+  float r1;
+
+  GRAPHICS::_WORLD3D_TO_SCREEN2D(a0,a1,a2,&r0,&r1);
+
+  if(r0 < 0.0 && r1 < 0.0) {
+    return mrb_nil_value();
+  } else {
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+    mrb_ary_set(mrb,rarray,0,mrb_float_value(mrb,r0));
+    mrb_ary_set(mrb,rarray,1,mrb_float_value(mrb,r1));
+    return rarray;
+  }
+
+  }
+
+  mrb_value mruby__PLAYER__GET_PLAYER_RGB_COLOUR(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  int r2;
+  PLAYER::GET_PLAYER_RGB_COLOUR(a0,&r0,&r1,&r2);
+    mrb_value rarray = mrb_ary_new_capa(mrb,3);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  mrb_ary_set(mrb,rarray,2,mrb_fixnum_value(r2));
+  return rarray;
+
+}
+
+  mrb_value mruby__PLAYER__GET_PLAYER_TARGET_ENTITY(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Entity r0;
+  BOOL r = PLAYER::GET_PLAYER_TARGET_ENTITY(a0,&r0);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+      mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Entity"), 0, NULL);
+  (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+  return rret;
+
+  }
+
+}
+
+  mrb_value mruby__PLAYER__GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Entity r0;
+  BOOL r = PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(a0,&r0);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+      mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Entity"), 0, NULL);
+  (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+  return rret;
+
+  }
+
+}
+
+  mrb_value mruby__PLAYER__GET_PLAYER_PARACHUTE_TINT_INDEX(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  PLAYER::GET_PLAYER_PARACHUTE_TINT_INDEX(a0,&r0);
+    if(r0 == -1){
+    return mrb_nil_value();
+  } else {
+    return mrb_fixnum_value(r0);
+  }
+
+}
+
+  mrb_value mruby__PLAYER__GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  PLAYER::GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX(a0,&r0);
+    if(r0 == -1){
+    return mrb_nil_value();
+  } else {
+    return mrb_fixnum_value(r0);
+  }
+
+}
+
+  mrb_value mruby__PLAYER__GET_PLAYER_PARACHUTE_PACK_TINT_INDEX(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  PLAYER::GET_PLAYER_PARACHUTE_PACK_TINT_INDEX(a0,&r0);
+    if(r0 == -1){
+    return mrb_nil_value();
+  } else {
+    return mrb_fixnum_value(r0);
+  }
+
+}
+
+  mrb_value mruby__PLAYER__GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  int r0;
+  int r1;
+  int r2;
+  PLAYER::GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR(a0,&r0,&r1,&r2);
+    mrb_value rarray = mrb_ary_new_capa(mrb,3);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  mrb_ary_set(mrb,rarray,2,mrb_fixnum_value(r2));
+  return rarray;
+
+}
+
+  mrb_value mruby__ENTITY__GET_ENTITY_MATRIX(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Any r0;
+  Any r1;
+  Vector3 r2;
+  Vector3 r3;
+  ENTITY::GET_ENTITY_MATRIX(a0,&r0,&r1,&r2,&r3);
+    mrb_value rarray = mrb_ary_new_capa(mrb,8);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  mrb_ary_set(mrb,rarray,2,mrb_float_value(mrb,r2.x));
+  mrb_ary_set(mrb,rarray,3,mrb_float_value(mrb,r2.y));
+  mrb_ary_set(mrb,rarray,4,mrb_float_value(mrb,r2.z));
+  mrb_ary_set(mrb,rarray,5,mrb_float_value(mrb,r3.x));
+  mrb_ary_set(mrb,rarray,6,mrb_float_value(mrb,r3.y));
+  mrb_ary_set(mrb,rarray,7,mrb_float_value(mrb,r3.z));
+  return rarray;
+
+}
 
 mrb_value mruby__PLAYER__GET_PLAYER_PED(mrb_state *mrb, mrb_value self) {
   if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
@@ -2537,6 +2678,20 @@ mrb_value mruby__ENTITY__GET_ENTITY_VELOCITY(mrb_state *mrb, mrb_value self) {
   mrb_value rvector3 = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Vector3"), 0, NULL);
   (void)mrb_funcall(mrb, rvector3, "__load", 3, mrb_float_value(mrb, r0.x), mrb_float_value(mrb, r0.y), mrb_float_value(mrb, r0.z));
   return rvector3;
+}
+
+mrb_value mruby__ENTITY__GET_OBJECT_INDEX_FROM_ENTITY_INDEX(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Object r0 = ENTITY::GET_OBJECT_INDEX_FROM_ENTITY_INDEX(a0);
+  if(r0 == 0) {
+    return mrb_nil_value();
+  } else {
+    mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Object"), 0, NULL);
+    (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+    return rret;
+  }
 }
 
 mrb_value mruby__ENTITY__GET_PED_INDEX_FROM_ENTITY_INDEX(mrb_state *mrb, mrb_value self) {
@@ -13359,6 +13514,46 @@ mrb_value mruby__VEHICLE___0xE16142B94664DEFD(mrb_state *mrb, mrb_value self) {
   return mrb_nil_value();
 }
 
+mrb_value mruby__OBJECT__CREATE_OBJECT(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_float a1;
+  mrb_float a2;
+  mrb_float a3;
+  mrb_bool a4;
+  mrb_bool a5;
+  mrb_bool a6;
+  mrb_get_args(mrb,"ifffbbb",&a0, &a1, &a2, &a3, &a4, &a5, &a6);
+  Object r0 = OBJECT::CREATE_OBJECT(a0, a1, a2, a3, a4, a5, a6);
+  if(r0 == 0) {
+    return mrb_nil_value();
+  } else {
+    mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Object"), 0, NULL);
+    (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+    return rret;
+  }
+}
+
+mrb_value mruby__OBJECT__CREATE_OBJECT_NO_OFFSET(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_float a1;
+  mrb_float a2;
+  mrb_float a3;
+  mrb_bool a4;
+  mrb_bool a5;
+  mrb_bool a6;
+  mrb_get_args(mrb,"ifffbbb",&a0, &a1, &a2, &a3, &a4, &a5, &a6);
+  Object r0 = OBJECT::CREATE_OBJECT_NO_OFFSET(a0, a1, a2, a3, a4, a5, a6);
+  if(r0 == 0) {
+    return mrb_nil_value();
+  } else {
+    mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Object"), 0, NULL);
+    (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+    return rret;
+  }
+}
+
 mrb_value mruby__OBJECT__PLACE_OBJECT_ON_GROUND_PROPERLY(mrb_state *mrb, mrb_value self) {
   if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
   mrb_int a0;
@@ -13398,6 +13593,27 @@ mrb_value mruby__OBJECT___0x77F33F2CCF64B3AA(mrb_state *mrb, mrb_value self) {
   mrb_get_args(mrb,"ib",&a0, &a1);
   OBJECT::_0x77F33F2CCF64B3AA(a0, a1);
   return mrb_nil_value();
+}
+
+mrb_value mruby__OBJECT__GET_CLOSEST_OBJECT_OF_TYPE(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_float a0;
+  mrb_float a1;
+  mrb_float a2;
+  mrb_float a3;
+  mrb_int a4;
+  mrb_bool a5;
+  mrb_bool a6;
+  mrb_bool a7;
+  mrb_get_args(mrb,"ffffibbb",&a0, &a1, &a2, &a3, &a4, &a5, &a6, &a7);
+  Object r0 = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(a0, a1, a2, a3, a4, a5, a6, a7);
+  if(r0 == 0) {
+    return mrb_nil_value();
+  } else {
+    mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Object"), 0, NULL);
+    (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+    return rret;
+  }
 }
 
 mrb_value mruby__OBJECT__HAS_OBJECT_BEEN_BROKEN(mrb_state *mrb, mrb_value self) {
@@ -30788,6 +31004,18 @@ mrb_value mruby__GRAPHICS___0xC35A6D07C93802B2(mrb_state *mrb, mrb_value self) {
   return mrb_nil_value();
 }
 
+mrb_value mruby__GRAPHICS__CREATE_TRACKED_POINT(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  Object r0 = GRAPHICS::CREATE_TRACKED_POINT();
+  if(r0 == 0) {
+    return mrb_nil_value();
+  } else {
+    mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Object"), 0, NULL);
+    (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+    return rret;
+  }
+}
+
 mrb_value mruby__GRAPHICS__SET_TRACKED_POINT_INFO(mrb_state *mrb, mrb_value self) {
   if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
   mrb_int a0;
@@ -38911,6 +39139,20 @@ mrb_value mruby__NETWORK__NET_TO_PED(mrb_state *mrb, mrb_value self) {
   }
 }
 
+mrb_value mruby__NETWORK__NET_TO_OBJ(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Object r0 = NETWORK::NET_TO_OBJ(a0);
+  if(r0 == 0) {
+    return mrb_nil_value();
+  } else {
+    mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Object"), 0, NULL);
+    (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+    return rret;
+  }
+}
+
 mrb_value mruby__NETWORK__NET_TO_ENT(mrb_state *mrb, mrb_value self) {
   if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
   mrb_int a0;
@@ -43666,29 +43908,6 @@ mrb_value mruby__UNK3___GET_GAME_VERSION(mrb_state *mrb, mrb_value self) {
   return mrb_str_new_cstr(mrb,cstr);
 }
 
-  mrb_value mruby__GRAPHICS___WORLD3D_TO_SCREEN2D(mrb_state *mrb, mrb_value self) {
-  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
-      mrb_float a0;
-  mrb_float a1;
-  mrb_float a2;
-  mrb_get_args(mrb,"fff",&a0,&a1,&a2);
-
-  float r0;
-  float r1;
-
-  GRAPHICS::_WORLD3D_TO_SCREEN2D(a0,a1,a2,&r0,&r1);
-
-  if(r0 < 0.0 && r1 < 0.0) {
-    return mrb_nil_value();
-  } else {
-    mrb_value rarray = mrb_ary_new_capa(mrb,2);
-    mrb_ary_set(mrb,rarray,0,mrb_float_value(mrb,r0));
-    mrb_ary_set(mrb,rarray,1,mrb_float_value(mrb,r1));
-    return rarray;
-  }
-
-  }
-
 
 
 void mruby_install_natives(mrb_state *mrb) {
@@ -43735,6 +43954,15 @@ void mruby_install_natives(mrb_state *mrb) {
   struct RClass *module_unk2 = mrb_define_module(mrb, "UNK2");
   struct RClass *module_unk3 = mrb_define_module(mrb, "UNK3");
 
+  mrb_define_class_method(mrb, module_graphics, "_WORLD3D_TO_SCREEN2D", mruby__GRAPHICS___WORLD3D_TO_SCREEN2D, MRB_ARGS_REQ(3));
+  mrb_define_class_method(mrb, module_player, "GET_PLAYER_RGB_COLOUR", mruby__PLAYER__GET_PLAYER_RGB_COLOUR, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_player, "GET_PLAYER_TARGET_ENTITY", mruby__PLAYER__GET_PLAYER_TARGET_ENTITY, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_player, "GET_ENTITY_PLAYER_IS_FREE_AIMING_AT", mruby__PLAYER__GET_ENTITY_PLAYER_IS_FREE_AIMING_AT, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_player, "GET_PLAYER_PARACHUTE_TINT_INDEX", mruby__PLAYER__GET_PLAYER_PARACHUTE_TINT_INDEX, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_player, "GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX", mruby__PLAYER__GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_player, "GET_PLAYER_PARACHUTE_PACK_TINT_INDEX", mruby__PLAYER__GET_PLAYER_PARACHUTE_PACK_TINT_INDEX, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_player, "GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR", mruby__PLAYER__GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_entity, "GET_ENTITY_MATRIX", mruby__ENTITY__GET_ENTITY_MATRIX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PED", mruby__PLAYER__GET_PLAYER_PED, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PED_SCRIPT_INDEX", mruby__PLAYER__GET_PLAYER_PED_SCRIPT_INDEX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "SET_PLAYER_MODEL", mruby__PLAYER__SET_PLAYER_MODEL, MRB_ARGS_REQ(2));
@@ -43981,6 +44209,7 @@ void mruby_install_natives(mrb_state *mrb) {
   mrb_define_class_method(mrb, module_entity, "GET_ENTITY_SPEED_VECTOR", mruby__ENTITY__GET_ENTITY_SPEED_VECTOR, MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb, module_entity, "GET_ENTITY_UPRIGHT_VALUE", mruby__ENTITY__GET_ENTITY_UPRIGHT_VALUE, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_entity, "GET_ENTITY_VELOCITY", mruby__ENTITY__GET_ENTITY_VELOCITY, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_entity, "GET_OBJECT_INDEX_FROM_ENTITY_INDEX", mruby__ENTITY__GET_OBJECT_INDEX_FROM_ENTITY_INDEX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_entity, "GET_PED_INDEX_FROM_ENTITY_INDEX", mruby__ENTITY__GET_PED_INDEX_FROM_ENTITY_INDEX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_entity, "GET_VEHICLE_INDEX_FROM_ENTITY_INDEX", mruby__ENTITY__GET_VEHICLE_INDEX_FROM_ENTITY_INDEX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_entity, "GET_WORLD_POSITION_OF_ENTITY_BONE", mruby__ENTITY__GET_WORLD_POSITION_OF_ENTITY_BONE, MRB_ARGS_REQ(2));
@@ -45137,10 +45366,13 @@ void mruby_install_natives(mrb_state *mrb) {
   mrb_define_class_method(mrb, module_vehicle, "_0xC361AA040D6637A8", mruby__VEHICLE___0xC361AA040D6637A8, MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb, module_vehicle, "_0x99C82F8A139F3E4E", mruby__VEHICLE___0x99C82F8A139F3E4E, MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb, module_vehicle, "_0xE16142B94664DEFD", mruby__VEHICLE___0xE16142B94664DEFD, MRB_ARGS_REQ(2));
+  mrb_define_class_method(mrb, module_object, "CREATE_OBJECT", mruby__OBJECT__CREATE_OBJECT, MRB_ARGS_REQ(7));
+  mrb_define_class_method(mrb, module_object, "CREATE_OBJECT_NO_OFFSET", mruby__OBJECT__CREATE_OBJECT_NO_OFFSET, MRB_ARGS_REQ(7));
   mrb_define_class_method(mrb, module_object, "PLACE_OBJECT_ON_GROUND_PROPERLY", mruby__OBJECT__PLACE_OBJECT_ON_GROUND_PROPERLY, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_object, "SLIDE_OBJECT", mruby__OBJECT__SLIDE_OBJECT, MRB_ARGS_REQ(8));
   mrb_define_class_method(mrb, module_object, "SET_OBJECT_TARGETTABLE", mruby__OBJECT__SET_OBJECT_TARGETTABLE, MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb, module_object, "_0x77F33F2CCF64B3AA", mruby__OBJECT___0x77F33F2CCF64B3AA, MRB_ARGS_REQ(2));
+  mrb_define_class_method(mrb, module_object, "GET_CLOSEST_OBJECT_OF_TYPE", mruby__OBJECT__GET_CLOSEST_OBJECT_OF_TYPE, MRB_ARGS_REQ(8));
   mrb_define_class_method(mrb, module_object, "HAS_OBJECT_BEEN_BROKEN", mruby__OBJECT__HAS_OBJECT_BEEN_BROKEN, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_object, "HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN", mruby__OBJECT__HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN, MRB_ARGS_REQ(6));
   mrb_define_class_method(mrb, module_object, "_0x46494A2475701343", mruby__OBJECT___0x46494A2475701343, MRB_ARGS_REQ(6));
@@ -47054,6 +47286,7 @@ void mruby_install_natives(mrb_state *mrb) {
   mrb_define_class_method(mrb, module_graphics, "_0x3669F1B198DCAA4F", mruby__GRAPHICS___0x3669F1B198DCAA4F, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, module_graphics, "_SET_BLACKOUT", mruby__GRAPHICS___SET_BLACKOUT, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_graphics, "_0xC35A6D07C93802B2", mruby__GRAPHICS___0xC35A6D07C93802B2, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, module_graphics, "CREATE_TRACKED_POINT", mruby__GRAPHICS__CREATE_TRACKED_POINT, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, module_graphics, "SET_TRACKED_POINT_INFO", mruby__GRAPHICS__SET_TRACKED_POINT_INFO, MRB_ARGS_REQ(5));
   mrb_define_class_method(mrb, module_graphics, "IS_TRACKED_POINT_VISIBLE", mruby__GRAPHICS__IS_TRACKED_POINT_VISIBLE, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_graphics, "DESTROY_TRACKED_POINT", mruby__GRAPHICS__DESTROY_TRACKED_POINT, MRB_ARGS_REQ(1));
@@ -47973,6 +48206,7 @@ void mruby_install_natives(mrb_state *mrb) {
   mrb_define_class_method(mrb, module_network, "OBJ_TO_NET", mruby__NETWORK__OBJ_TO_NET, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_network, "NET_TO_VEH", mruby__NETWORK__NET_TO_VEH, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_network, "NET_TO_PED", mruby__NETWORK__NET_TO_PED, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_network, "NET_TO_OBJ", mruby__NETWORK__NET_TO_OBJ, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_network, "NET_TO_ENT", mruby__NETWORK__NET_TO_ENT, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_network, "NETWORK_GET_LOCAL_HANDLE", mruby__NETWORK__NETWORK_GET_LOCAL_HANDLE, MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb, module_network, "_0xBC1D768F2F5D6C05", mruby__NETWORK___0xBC1D768F2F5D6C05, MRB_ARGS_REQ(1));
@@ -48563,7 +48797,6 @@ void mruby_install_natives(mrb_state *mrb) {
   mrb_define_class_method(mrb, module_unk3, "_0x498C1E05CE5F7877", mruby__UNK3___0x498C1E05CE5F7877, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, module_unk3, "_0x9507D4271988E1AE", mruby__UNK3___0x9507D4271988E1AE, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_unk3, "_GET_GAME_VERSION", mruby__UNK3___GET_GAME_VERSION, MRB_ARGS_NONE());
-  mrb_define_class_method(mrb, module_graphics, "_WORLD3D_TO_SCREEN2D", mruby__GRAPHICS___WORLD3D_TO_SCREEN2D, MRB_ARGS_REQ(3));
 }
 
 mrb_value mruby__gtav__set_call_limit(mrb_state *mrb, mrb_value self) {
@@ -48582,4 +48815,4 @@ mrb_value mruby__gtav__get_call_limit(mrb_state *mrb, mrb_value self) {
   return mrb_fixnum_value(call_limit);
 }
 
-// generated 4829 out of 5180 native functions (351 ungenerated)
+// generated 4843 out of 5180 native functions (337 ungenerated)

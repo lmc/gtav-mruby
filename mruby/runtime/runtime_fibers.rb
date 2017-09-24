@@ -23,7 +23,7 @@ module GTAV
 
   def self.register(name,enabled = true,&block)
     return if !enabled
-    log "register #{name}"
+    log "Registered '#{name}'"
     @@fibers[name] = Fiber.new(&block)
     @@fibers_next_tick_at[name] = 0
     @@metrics.register_fiber(name) if @@metrics

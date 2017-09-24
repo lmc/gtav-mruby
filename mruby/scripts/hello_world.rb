@@ -48,33 +48,73 @@
     
 #   end
 # end
-
+COORDS_TEXT = UiStyledText.new()
 GTAV.register(:HelloWorld) do
-  # a = HelloWorld.new
   loop do
-    # invalid ^&*$%^^
 
-    # puts "checking"
-    if GTAV.is_key_just_up(0x76) # F7
-      puts "spawning"
-      model = "OPPRESSOR"
-      hash = GAMEPLAY::GET_HASH_KEY(model)
-      if STREAMING::IS_MODEL_IN_CDIMAGE(hash) && STREAMING::IS_MODEL_A_VEHICLE(hash)
-        STREAMING::REQUEST_MODEL(hash)
-        GTAV.wait(0) until STREAMING::HAS_MODEL_LOADED(hash)
-        coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,5.0,1.0)
-        vehicle = VEHICLE::CREATE_VEHICLE(hash,*coords,0.0,true,true)
-        puts "vehicle: #{vehicle.inspect}"
-        GTAV.wait(1000)
-        STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash)
-        ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(vehicle)
-        # VEHICLE::DELETE_VEHICLE(vehicle)
+    pid = PLAYER::PLAYER_ID()
+    ppid = PLAYER::PLAYER_PED_ID()
+
+    coords = ENTITY::GET_ENTITY_COORDS(ppid,false)
+    COORDS_TEXT.draw("#{coords[0].round(3)}",0.45,0.1)
+    COORDS_TEXT.draw("#{coords[1].round(3)}",0.45,0.1+0.05)
+    COORDS_TEXT.draw("#{coords[2].round(3)}",0.45,0.1+0.1)
+
+    model = ENTITY::GET_ENTITY_MODEL(ppid)
+    if ENTITY::IS_ENTITY_DEAD(ppid) || PLAYER::IS_PLAYER_BEING_ARRESTED(pid, true)
+      puts "hashes: #{["player_zero","player_one","player_two"].map{|s| GAMEPLAY::GET_HASH_KEY(s).to_i}.inspect}"
+      puts "model: #{model.inspect}"
+      if not ["player_zero","player_one","player_two"].map{|s| GAMEPLAY::GET_HASH_KEY(s).to_i}.include?(model)
+        log "resetting player on deatharrest"
+        model = GAMEPLAY::GET_HASH_KEY("player_zero")
+        STREAMING::REQUEST_MODEL(model)
+        GTAV.wait(0) until STREAMING::HAS_MODEL_LOADED(model)
+        PLAYER::SET_PLAYER_MODEL(pid, model)
+        ppid = PLAYER::PLAYER_PED_ID()
+        PED::SET_PED_DEFAULT_COMPONENT_VARIATION(ppid)
+        STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model)
       end
     end
+
+    # if GTAV.is_key_just_up(0x76) # F7
+    #   log PLAYER::GET_PLAYER_RGB_COLOUR(PLAYER::PLAYER_ID()).inspect
+    #   log PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(PLAYER::PLAYER_ID()).inspect
+    #   log PLAYER::GET_PLAYER_PARACHUTE_TINT_INDEX(PLAYER::PLAYER_ID()).inspect
+    #   log PLAYER::GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR(PLAYER::PLAYER_ID()).inspect
+    #   log ENTITY::GET_ENTITY_MATRIX(PLAYER::PLAYER_PED_ID()).inspect
+    #   puts "spawning"
+    #   model = "BULLET"
+    #   hash = GAMEPLAY::GET_HASH_KEY(model)
+    #   if STREAMING::IS_MODEL_IN_CDIMAGE(hash) && STREAMING::IS_MODEL_A_VEHICLE(hash)
+    #     STREAMING::REQUEST_MODEL(hash)
+    #     GTAV.wait(0) until STREAMING::HAS_MODEL_LOADED(hash)
+    #     coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,5.0,1.0)
+    #     vehicle = VEHICLE::CREATE_VEHICLE(hash,*coords,0.0,true,true)
+    #     puts "vehicle: #{vehicle.inspect}"
+    #     GTAV.wait(1000)
+    #     STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+    #     ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(vehicle)
+    #     # VEHICLE::DELETE_VEHICLE(vehicle)
+    #   end
+    # end
     GTAV.wait(0)
   end
 end
 
+def spawn_vehicle(model)
+  hash = GAMEPLAY::GET_HASH_KEY(model)
+  if STREAMING::IS_MODEL_IN_CDIMAGE(hash) && STREAMING::IS_MODEL_A_VEHICLE(hash)
+    STREAMING::REQUEST_MODEL(hash)
+    # GTAV.wait(0) until STREAMING::HAS_MODEL_LOADED(hash)
+    STREAMING::LOAD_ALL_OBJECTS_NOW()
+    coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(),0.0,5.0,1.0)
+    vehicle = VEHICLE::CREATE_VEHICLE(hash,*coords,0.0,true,true)
+    # GTAV.wait(0)
+    STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+    ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(vehicle)
+    return true
+  end
+end
 
 # def distance(a,b)
 #   if a > b

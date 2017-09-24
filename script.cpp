@@ -15,6 +15,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include "mruby.h"
 #include "mruby/irep.h"
 #include "mruby/array.h"
@@ -26,6 +27,7 @@ extern "C" {
 #endif
 
 #include "mrubynatives.h"
+
 
 
 // console helpers
@@ -60,6 +62,7 @@ void SetStdOutToNewConsole()
 }
 
 static BOOL reset_mruby_next_tick = true;
+static BOOL socket_enabled = false;
 static int reset_confirm_ticks = 0;
 static mrb_state *mrb;
 static struct RClass *module;
@@ -116,6 +119,26 @@ BOOL mruby_load_relative(char filename[]) {
 	mrb_parser_free(parser);
 	mrbc_context_free(mrb, cxt);
 	return ret;
+}
+
+mrb_value mruby_is_syntax_valid(mrb_state *mrb, mrb_value self) {
+	char *code;
+	size_t code_s;
+	mrb_get_args(mrb, "s", &code, &code_s);
+	mrbc_context *cxt = mrbc_context_new(mrb);
+	mrbc_filename(mrb, cxt, "eval");
+	cxt->capture_errors = true;
+	mrb_parser_state *parser = mrb_parse_string(mrb, code, cxt);
+	if (parser->nerr > 0) {
+		mrbc_context_free(mrb, cxt);
+		mrb_parser_free(parser);
+		return mrb_false_value();
+	}
+	else {
+		mrbc_context_free(mrb, cxt);
+		mrb_parser_free(parser);
+		return mrb_true_value();
+	}
 }
 
 
@@ -243,20 +266,20 @@ mrb_value mruby__gtav___draw_text_many(mrb_state *mrb, mrb_value self) {
 	mrb_int c_g;
 	mrb_int c_b;
 	mrb_int c_a;
-	//mrb_int alignment;
-	//mrb_float wrap_x;
-	//mrb_float wrap_y;
+	mrb_int alignment;
+	mrb_float wrap_x;
+	mrb_float wrap_y;
 	mrb_bool proportional;
 	char* str;
 	int str_len;
 	mrb_float x;
 	mrb_float y;
-	mrb_get_args(mrb, "iffiiiibsff", &font, &scale1, &scale2, &c_r, &c_g, &c_b, &c_a, &proportional, &str, &str_len, &x, &y);
+	mrb_get_args(mrb, "iffiiiiiffbsff", &font, &scale1, &scale2, &c_r, &c_g, &c_b, &c_a, &alignment, &wrap_x, &wrap_y, &proportional, &str, &str_len, &x, &y);
 	UI::SET_TEXT_FONT(font);
 	UI::SET_TEXT_SCALE(scale1, scale2);
 	UI::SET_TEXT_COLOUR(c_r, c_g, c_b, c_a);
-	//UI::SET_TEXT_JUSTIFICATION(alignment);
-	//UI::SET_TEXT_WRAP(wrap_x, wrap_y);
+	UI::SET_TEXT_JUSTIFICATION(alignment);
+	UI::SET_TEXT_WRAP(wrap_x, wrap_y);
 	UI::SET_TEXT_PROPORTIONAL(proportional);
 	UI::_SET_TEXT_ENTRY("STRING");
 	UI::_ADD_TEXT_COMPONENT_STRING(str);
@@ -290,10 +313,11 @@ void mruby_init() {
 	mrb_define_class_method(mrb, module, "world_get_all_vehicles", mruby__gtav__world_get_all_vehicles, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module, "world_get_all_peds", mruby__gtav__world_get_all_peds, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module, "world_get_all_objects", mruby__gtav__world_get_all_objects, MRB_ARGS_NONE());
-	mrb_define_class_method(mrb, module, "_draw_text_many", mruby__gtav___draw_text_many, MRB_ARGS_REQ(11));
+	mrb_define_class_method(mrb, module, "_draw_text_many", mruby__gtav___draw_text_many, MRB_ARGS_REQ(14));
 	mrb_define_class_method(mrb, module, "reset_mruby_next_tick!", mruby__gtav__reset_mruby_next_tick, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module, "set_game_window", mruby__gtav__set_game_window, MRB_ARGS_REQ(5));
 	mrb_define_class_method(mrb, module, "set_console_window", mruby__gtav__set_console_window, MRB_ARGS_REQ(5));
+	mrb_define_class_method(mrb, module, "is_syntax_valid?", mruby_is_syntax_valid, MRB_ARGS_REQ(1));
 
 
 	fprintf(stdout, "loading bootstrap\n");
@@ -336,20 +360,92 @@ void mruby_shutdown() {
 
 
 
+bool initWSA() {
+	WSADATA wsadata;
+	int error = WSAStartup(0x0202, &wsadata);
+	if (error) return false;
+	return true;
+}
+
+
+
+
 // script hook main loop
 
 void main()
 {	
-	FILE *rfile = fopen("./mruby/console-enabled", "r");
+	SOCKET s;
+	char recvbuffer[1024];
+	FILE *rfile;
+	rfile = fopen("./mruby/enable-console", "r");
 	if (rfile) {
 		fclose(rfile);
 		SetStdOutToNewConsole();
 	}
 
-	fprintf(stdout, "beginning main loop\n");
+	rfile = fopen("./mruby/enable-socket", "r");
+	if (rfile) {
+		fclose(rfile);
+		socket_enabled = true;
+
+		initWSA();
+		SOCKADDR_IN addr;
+		addr.sin_family = AF_INET;
+		addr.sin_port = htons(42069);
+		addr.sin_addr.s_addr = htonl(INADDR_ANY);
+		s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+		u_long nonblocking = 1;
+		ioctlsocket(s, FIONBIO, &nonblocking);
+
+		fprintf(stdout, "socket %i\n", s);
+
+		int bi = bind(s, (LPSOCKADDR)&addr, sizeof(addr));
+		fprintf(stdout, "bind %i\n", bi);
+
+		int li = listen(s, 3);
+		fprintf(stdout, "listen %i\n", li);
+
+		fprintf(stdout, "beginning main loop\n");
+	}
+
+
 
 	while (true)
 	{
+
+		if (socket_enabled) {
+			SOCKET acc = accept(s, NULL, NULL);
+			if (acc != INVALID_SOCKET) {
+				//fprintf(stdout, "client connected\n");
+				//int wi = send(acc, "hello", 5, NULL);
+				//fprintf(stdout, "wrote data %i\n",wi);
+				memset(&recvbuffer[0], 0, sizeof(recvbuffer));
+				int ri = recv(acc, recvbuffer, sizeof(recvbuffer), 0);
+				if (ri < 0) {
+					fprintf(stdout, "read error  %d\n", ri);
+				}
+				else {
+					//fprintf(stdout, "read data %d\n", ri);
+					//fprintf(stdout, "= %s\n", recvbuffer);
+				}
+
+				mrb_value retstr = mrb_funcall(mrb, mrb_obj_value(module), "on_socket", 1, mrb_str_new_cstr(mrb, recvbuffer));
+				char* cstr = mrb_str_to_cstr(mrb, retstr);
+
+				//fprintf(stdout, "sending data %s\n", cstr);
+
+
+				int wi = send(acc, cstr, strlen(cstr), NULL);
+				//fprintf(stdout, "wrote data %i\n", wi);
+
+				//int wi = send(acc, "hello\n", 6, NULL);
+				//fprintf(stdout, "wrote data %i\n",wi);
+				closesocket(acc);
+			}
+		}
+
+
 		// F11
 		if (IsKeyDown(0x7A)) {
 			reset_confirm_ticks++;

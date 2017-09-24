@@ -3,7 +3,7 @@ module GTAV::Metrics
 
   @@metrics = {}
   @@do_metrics = false
-  INSTRUMENTATION_QUEUE_TICKS_SIZE = 20
+  INSTRUMENTATION_QUEUE_TICKS_SIZE = 60
   INSTRUMENTATION_QUEUE_SIZE = 20
 
   def self.register_fiber(name)

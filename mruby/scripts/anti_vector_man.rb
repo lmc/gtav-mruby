@@ -1,5 +1,7 @@
 
-$avm_entities = QueueSet.new(32)
+$all_entities = QueueSet.new(64)
+
+$avm_entities = QueueSet.new(64)
 # $avm_entities = []
 
 GTAV.register(:AVM,true) do
@@ -53,6 +55,7 @@ GTAV.register(:AVM,true) do
           end
           $avm_entities.push(vehicle)
         elsif distance > 50.0
+          # log "deleted #{vehicle}"
           $avm_entities.delete(vehicle)
         end
 
@@ -84,6 +87,7 @@ GTAV.register(:AVMUpdater,true) do
       if distance < 50.0
         $avm_entities.push(ent)
       end
+      $all_entities.push(ent)
     end
   end
 end
