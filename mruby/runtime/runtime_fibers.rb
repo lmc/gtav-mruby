@@ -15,6 +15,7 @@ module GTAV
   @@fibers_next_tick_at = {}
   @@fibers_names = nil
   @@current_fiber = nil
+  @@current_fiber_name = nil
 
   @@metrics = nil
   def self.metrics; @@metrics; end
@@ -57,6 +58,7 @@ module GTAV
     @@fibers.each_pair do |name,fiber|
 
       @@current_fiber = fiber
+      @@current_fiber_name = name
 
       # skip fiber if it's not scheduled to run yet
       next if @@fibers_next_tick_at[name] > tick_time
@@ -89,13 +91,28 @@ module GTAV
         # if we have to rescue an exception here, it was uncaught inside
         # the fiber. this means there is no valid way to continue execution
         # of the fiber, and we must shut it down
-        @@fibers.delete(name)
+        terminate_fiber(name)
         log "ERROR IN #{name}, shutting down fiber", :error
         on_error(ex)
 
       end
 
+      @@current_fiber = nil
+      @@current_fiber_name = nil
+
     end
+  end
+
+  def self.terminate_current_fiber!
+    terminate_fiber(@@current_fiber_name)
+  end
+
+  def self.terminate_fiber(name)
+    @@fibers.delete(name)
+  end
+
+  def self.fibers
+    @@fibers
   end
 
   def self.wait(ms)

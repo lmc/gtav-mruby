@@ -1,6 +1,6 @@
-GTAV.register(:DebugReloader) do
+GTAV.register(:DebugReloader,CONFIG["scripts.DebugReloader.enabled"]) do
   loop do
-    if GTAV.is_key_just_up(0x7A)
+    if GTAV.is_key_just_up(CONFIG["scripts.DebugReloader.key"])
       GTAV.reset_mruby_next_tick!
     end
     GTAV.wait(100)

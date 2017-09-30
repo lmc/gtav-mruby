@@ -4,7 +4,6 @@
 // not generating PED::GET_PED_LAST_DAMAGE_BONE - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Any*", :name=>"outBone"}]}
 // not generating PED::GET_PED_PARACHUTE_TINT_INDEX - {:return_type=>"void", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Any*", :name=>"outTintIndex"}]}
 // not generating PED::ADD_RELATIONSHIP_GROUP - {:return_type=>"Any", :arguments=>[{:type=>"char*", :name=>"name"}, {:type=>"Hash*", :name=>"groupHash"}]}
-// not generating PED::GET_GROUP_SIZE - {:return_type=>"void", :arguments=>[{:type=>"int", :name=>"groupID"}, {:type=>"Any*", :name=>"unknown"}, {:type=>"int*", :name=>"sizeInMembers"}]}
 // not generating PED::SET_PED_ALTERNATE_WALK_ANIM - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"BOOL", :name=>"p4"}]}
 // not generating PED::SET_PED_GESTURE_GROUP - {:return_type=>"void", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating PED::GET_ANIM_INITIAL_OFFSET_POSITION - {:return_type=>"Vector3", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"float", :name=>"p4"}, {:type=>"float", :name=>"p5"}, {:type=>"float", :name=>"p6"}, {:type=>"float", :name=>"p7"}, {:type=>"float", :name=>"p8"}, {:type=>"Any", :name=>"p9"}]}
@@ -17,7 +16,6 @@
 // not generating PED::APPLY_PED_BLOOD_BY_ZONE - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}]}
 // not generating PED::APPLY_PED_BLOOD_SPECIFIC - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any", :name=>"p1"}, {:type=>"float", :name=>"p2"}, {:type=>"float", :name=>"p3"}, {:type=>"float", :name=>"p4"}, {:type=>"float", :name=>"p5"}, {:type=>"Any", :name=>"p6"}, {:type=>"float", :name=>"p7"}, {:type=>"Any*", :name=>"p8"}]}
 // not generating PED::SET_FACIAL_IDLE_ANIM_OVERRIDE - {:return_type=>"void", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"char*", :name=>"facialAnim"}, {:type=>"Any*", :name=>"p2"}]}
-// not generating PED::IS_PED_EVASIVE_DIVING - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"Entity*", :name=>"evadingEntity"}]}
 // not generating PED::_0x9C6A6C19B6C0C496 - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating PED::_0xF60165E1D2C5370B - {:return_type=>"BOOL", :arguments=>[{:type=>"Ped", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}]}
 // not generating PED::GET_PED_NEARBY_VEHICLES - {:return_type=>"int", :arguments=>[{:type=>"Ped", :name=>"ped"}, {:type=>"int*", :name=>"sizeAndVehs"}]}
@@ -92,7 +90,6 @@
 // not generating UI::_0x8EFCCF6EC66D85E4 - {:return_type=>"Any", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"BOOL", :name=>"p3"}, {:type=>"BOOL", :name=>"p4"}]}
 // not generating UI::_0xB6871B0555B02996 - {:return_type=>"Any", :arguments=>[{:type=>"Any*", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any", :name=>"p2"}, {:type=>"Any*", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}, {:type=>"Any", :name=>"p5"}]}
 // not generating UI::GET_HUD_COLOUR - {:return_type=>"void", :arguments=>[{:type=>"int", :name=>"hudColour"}, {:type=>"int*", :name=>"r"}, {:type=>"int*", :name=>"g"}, {:type=>"int*", :name=>"b"}, {:type=>"int*", :name=>"a"}]}
-// not generating UI::REMOVE_BLIP - {:return_type=>"void", :arguments=>[{:type=>"Blip*", :name=>"blip"}]}
 // not generating UI::_0xE45087D85F468BC2 - {:return_type=>"void", :arguments=>[{:type=>"BOOL", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}]}
 // not generating UI::_0x817B86108EB94E51 - {:return_type=>"void", :arguments=>[{:type=>"BOOL", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"Any*", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}, {:type=>"Any*", :name=>"p5"}, {:type=>"Any*", :name=>"p6"}, {:type=>"Any*", :name=>"p7"}, {:type=>"Any*", :name=>"p8"}]}
 // not generating UI::_0xF9904D11F1ACBEC3 - {:return_type=>"Any", :arguments=>[{:type=>"float", :name=>"x"}, {:type=>"float", :name=>"y"}, {:type=>"float", :name=>"z"}, {:type=>"Any*", :name=>"p3"}, {:type=>"Any*", :name=>"p4"}]}
@@ -117,9 +114,6 @@
 // not generating GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED - {:return_type=>"void", :arguments=>[{:type=>"int*", :name=>"scaleformPtr"}]}
 // not generating GRAPHICS::_0x2201C576FACAEBE8 - {:return_type=>"void", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any", :name=>"p2"}]}
 // not generating STATS::STAT_SET_DATE - {:return_type=>"BOOL", :arguments=>[{:type=>"Hash", :name=>"statName"}, {:type=>"Any*", :name=>"value"}, {:type=>"int", :name=>"numFields"}, {:type=>"BOOL", :name=>"save"}]}
-// not generating STATS::STAT_GET_INT - {:return_type=>"BOOL", :arguments=>[{:type=>"Hash", :name=>"statHash"}, {:type=>"int*", :name=>"outValue"}, {:type=>"int", :name=>"p2"}]}
-// not generating STATS::STAT_GET_FLOAT - {:return_type=>"BOOL", :arguments=>[{:type=>"Hash", :name=>"statHash"}, {:type=>"float*", :name=>"outValue"}, {:type=>"Any", :name=>"p2"}]}
-// not generating STATS::STAT_GET_BOOL - {:return_type=>"BOOL", :arguments=>[{:type=>"Hash", :name=>"statHash"}, {:type=>"BOOL*", :name=>"outValue"}, {:type=>"Any", :name=>"p2"}]}
 // not generating STATS::STAT_GET_DATE - {:return_type=>"BOOL", :arguments=>[{:type=>"Hash", :name=>"statHash"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any", :name=>"p2"}, {:type=>"Any", :name=>"p3"}]}
 // not generating STATS::STAT_GET_POS - {:return_type=>"BOOL", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any*", :name=>"p2"}, {:type=>"Any*", :name=>"p3"}, {:type=>"Any", :name=>"p4"}]}
 // not generating STATS::STAT_GET_MASKED_INT - {:return_type=>"BOOL", :arguments=>[{:type=>"Any", :name=>"p0"}, {:type=>"Any*", :name=>"p1"}, {:type=>"Any", :name=>"p2"}, {:type=>"Any", :name=>"p3"}, {:type=>"Any", :name=>"p4"}]}
@@ -470,6 +464,38 @@ static int call_limit = 1000;
   mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
   mrb_ary_set(mrb,rarray,2,mrb_fixnum_value(r2));
   return rarray;
+
+}
+
+  mrb_value mruby__PED__GET_GROUP_SIZE(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Any r0;
+  int r1;
+  PED::GET_GROUP_SIZE(a0,&r0,&r1);
+    mrb_value rarray = mrb_ary_new_capa(mrb,2);
+  
+  mrb_ary_set(mrb,rarray,0,mrb_fixnum_value(r0));
+  mrb_ary_set(mrb,rarray,1,mrb_fixnum_value(r1));
+  return rarray;
+
+}
+
+  mrb_value mruby__PED__IS_PED_EVASIVE_DIVING(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  Entity r0;
+  BOOL r = PED::IS_PED_EVASIVE_DIVING(a0,&r0);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+      mrb_value rret = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "GTAV"), "Entity"), 0, NULL);
+  (void)mrb_funcall(mrb, rret, "__load", 1, mrb_fixnum_value(r0));
+  return rret;
+
+  }
 
 }
 
@@ -885,6 +911,60 @@ static int call_limit = 1000;
 
   }
 
+}
+
+  mrb_value mruby__STATS__STAT_GET_INT(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_int a1;
+  mrb_get_args(mrb,"ii",&a0,&a1);
+  int r0;
+  BOOL r = STATS::STAT_GET_INT(a0,&r0,a1);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+    return mrb_fixnum_value(r0);
+  }
+
+}
+
+  mrb_value mruby__STATS__STAT_GET_FLOAT(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_int a1;
+  mrb_get_args(mrb,"ii",&a0,&a1);
+  float r0;
+  BOOL r = STATS::STAT_GET_FLOAT(a0,&r0,a1);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+    return mrb_float_value(mrb,r0);
+  }
+
+}
+
+  mrb_value mruby__STATS__STAT_GET_BOOL(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_int a1;
+  mrb_get_args(mrb,"ii",&a0,&a1);
+  BOOL r0;
+  BOOL r = STATS::STAT_GET_BOOL(a0,&r0,a1);
+    if(!r){
+    return mrb_nil_value();
+  } else {
+    return mrb_bool_value(r0);
+  }
+
+}
+
+  mrb_value mruby__UI__REMOVE_BLIP(mrb_state *mrb, mrb_value self) {
+  if(call_limit_enabled && (call_limit-- < 0)) mrb_raise(mrb, mrb_class_get(mrb,"CallLimitExceeded"), "");
+  mrb_int a0;
+  mrb_get_args(mrb,"i",&a0);
+  
+  UI::REMOVE_BLIP((Blip*) &a0);
+  return mrb_nil_value();
 }
 
 mrb_value mruby__PLAYER__GET_PLAYER_PED(mrb_state *mrb, mrb_value self) {
@@ -44328,6 +44408,8 @@ void mruby_install_natives(mrb_state *mrb) {
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX", mruby__PLAYER__GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PARACHUTE_PACK_TINT_INDEX", mruby__PLAYER__GET_PLAYER_PARACHUTE_PACK_TINT_INDEX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR", mruby__PLAYER__GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_ped, "GET_GROUP_SIZE", mruby__PED__GET_GROUP_SIZE, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_ped, "IS_PED_EVASIVE_DIVING", mruby__PED__IS_PED_EVASIVE_DIVING, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_entity, "GET_ENTITY_MATRIX", mruby__ENTITY__GET_ENTITY_MATRIX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_entity, "GET_ENTITY_QUATERNION", mruby__ENTITY__GET_ENTITY_QUATERNION, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_entity, "SET_OBJECT_AS_NO_LONGER_NEEDED", mruby__ENTITY__SET_OBJECT_AS_NO_LONGER_NEEDED, MRB_ARGS_REQ(1));
@@ -44354,6 +44436,10 @@ void mruby_install_natives(mrb_state *mrb) {
   mrb_define_class_method(mrb, module_weapon, "GET_AMMO_IN_CLIP", mruby__WEAPON__GET_AMMO_IN_CLIP, MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb, module_weapon, "GET_MAX_AMMO", mruby__WEAPON__GET_MAX_AMMO, MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb, module_weapon, "GET_PED_LAST_WEAPON_IMPACT_COORD", mruby__WEAPON__GET_PED_LAST_WEAPON_IMPACT_COORD, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, module_stats, "STAT_GET_INT", mruby__STATS__STAT_GET_INT, MRB_ARGS_REQ(2));
+  mrb_define_class_method(mrb, module_stats, "STAT_GET_FLOAT", mruby__STATS__STAT_GET_FLOAT, MRB_ARGS_REQ(2));
+  mrb_define_class_method(mrb, module_stats, "STAT_GET_BOOL", mruby__STATS__STAT_GET_BOOL, MRB_ARGS_REQ(2));
+  mrb_define_class_method(mrb, module_ui, "REMOVE_BLIP", mruby__UI__REMOVE_BLIP, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PED", mruby__PLAYER__GET_PLAYER_PED, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "GET_PLAYER_PED_SCRIPT_INDEX", mruby__PLAYER__GET_PLAYER_PED_SCRIPT_INDEX, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, module_player, "SET_PLAYER_MODEL", mruby__PLAYER__SET_PLAYER_MODEL, MRB_ARGS_REQ(2));
@@ -49206,4 +49292,4 @@ mrb_value mruby__gtav__get_call_limit(mrb_state *mrb, mrb_value self) {
   return mrb_fixnum_value(call_limit);
 }
 
-// generated 4868 out of 5180 native functions (312 ungenerated)
+// generated 4874 out of 5180 native functions (306 ungenerated)

@@ -1,8 +1,78 @@
-MRuby Script Hook for GTAV
+MRuby Script Hook for GTA V
+===========================
 
-WIP
+This .asi plugin integrates the MRuby VM with Alexander Blade's Script Hook for GTA V, allowing you to write Ruby scripts that execute within the game, with access to all native functions and types.
 
 
-Compile instructions:
+Installation
+------------
 
-Link against `libmruby.lib` (ensure it's built for x64), `msvcrtd.lib`, `vcruntimed.lib` and `ScriptHookV.lib`.
+* Ensure you have [ASI Loader]() and [Script Hook]() installed
+* Copy the contents of the `Install` folder into your "Grand Theft Auto V" folder.
+
+
+Boot and environment overview
+-----------------------------
+
+On game boot, the plugin initialises an MRuby virtual machine by:
+
+* creating the `mrb_state` vm object
+* creating the `GTAV` Ruby module
+* attaching C library functions (file loading, hook integration, etc.)
+* executing `mruby/bootstrap.rb`, which defines Ruby classes and methods used by C code
+* installing native function wrappers to interact with the game
+* executing `mruby/runtime.rb`, which provides:
+  - constant/enum values
+  - more runtime classes (UI/Socket/etc.)
+  - an instrumentation/metrics framework for performance monitoring
+  - a cooperative multitasking scheduler using Fibers (co-routines)
+* finally, the runtime loads and evaluates all files in `mruby/scripts`
+
+With the MRuby VM initialised, the game continues to boot. Once fully loaded, Script Hook calls our ScriptMain C function each frame, which calls into the VM and invokes `GTAV.tick`. The Fiber runtime then executes each scheduled co-routine, before yielding back to the game.
+
+
+Writing Scripts
+---------------
+
+Create a `.rb` file in `mruby/scripts` and register a block using `GTAV.register, like so:
+
+```
+GTAV.register(:MyScriptName) do
+  loop do
+    player_id = PLAYER::PLAYER_ID()
+    log "player_id: #{player_id}"
+    GTAV.wait(1000) # IMPORTANT: you MUST call `GTAV.wait` in loops to avoid lockups!
+  end
+end
+```
+
+
+Included Features
+-----------------
+
+In `mruby\config.rb`, you can enable the following included features:
+
+* Local console for logging
+* Remote console for evaluating code over the network
+* Ingame performance metrics
+* Code reloader
+
+There are also two example scripts included:
+
+* animal_friend_finder.rb - highlights randomly-spawned cats with lines and distances so you can visit them
+* anti_vector_man.rb - repels vehicles and peds away from you. extremely fun when driving. to activate, press L2 on foot, and L1 in a vehicle
+
+
+Known Issues
+------------
+
+* Not all native functions are supported (currently, 4874/5180 are available, with 306 unavailable). See mrubynatives.cpp for details
+* Apparent issues loading on Windows 8.1. If you don't see a message in the top-left corner on game load, check asiloader.log to see if it loaded. If it just says "failed to load", unfortunately I'm as stumped as you are. This was compiled using Visual Studio 2017, if anyone knows of any hidden dependencies please report it as an issue on Github.
+
+
+Licence
+-------
+
+MIT - Copyright 2017 Luke Mcildoon
+
+

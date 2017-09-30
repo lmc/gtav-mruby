@@ -1,7 +1,7 @@
 # draws performance metrics onscreen
 # has a tick time chart, log viewer and a table of tick times/call counts per-fiber
 
-GTAV.register(:DebugMetrics) do
+GTAV.register(:DebugMetrics,CONFIG["scripts.DebugMetrics.enabled"]) do
 
   @has_metrics = !!GTAV.metrics
   @has_logger = GTAV.respond_to?(:logger_buffer)
@@ -161,7 +161,7 @@ GTAV.register(:DebugMetrics) do
   update_all_data!
 
   loop do
-    if GTAV.is_key_just_up(Key::F10) # F10
+    if GTAV.is_key_just_up(CONFIG["scripts.DebugMetrics.key"]) # F10
       mindex = DISPLAY_MODES.index(@mode) + 1
       mindex = 0 if mindex >= DISPLAY_MODES.size
       @mode = DISPLAY_MODES[mindex]

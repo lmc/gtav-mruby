@@ -27,236 +27,30 @@ extern "C" {
 #endif
 
 #include "mrubynatives.h"
+#include "vendor/mruby-tiny-io/src/tinyio.c"
 
 
-
-// console helpers
-
-void SetStdOutToNewConsole()
-{
-	int hConHandle;
-	long lStdHandle;
-	FILE *fp;
-
-	// Allocate a console for this app
-	AllocConsole();
-	AttachConsole(GetCurrentProcessId());
-
-	freopen("CON", "w", stdout);
-	freopen("CONIN$", "r", stdin);
-
-	// Redirect unbuffered STDOUT to the console
-	lStdHandle = (long)GetStdHandle(STD_OUTPUT_HANDLE);
-	hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
-	fp = _fdopen(hConHandle, "w");
-	*stdout = *fp;
-
-	setvbuf(stdout, NULL, _IONBF, 0);
-	setbuf(stdout, NULL);
-
-	HWND window_game = FindWindow(NULL, "Grand Theft Auto V");
-	SetWindowPos(window_game, NULL, 0, 0, 1920 + 4, 1080 + 25, 0);
-
-	HWND window_console = GetConsoleWindow();
-	SetWindowPos(window_console, NULL, 1920 - 5, 0, 650, 1080 + 25, 0);
-}
 
 static BOOL reset_mruby_next_tick = true;
-static BOOL socket_enabled = false;
 static int reset_confirm_ticks = 0;
 static mrb_state *mrb;
 static struct RClass *module;
-
-// mruby vm helpers
 
 void mruby_check_exception() {
 	if (mrb->exc) {
 		mrb_value obj = mrb_obj_value(mrb->exc);
 		obj = mrb_funcall(mrb, obj, "inspect", 0);
-		fprintf(stdout, "error: %s\n",RSTRING_PTR(obj));
+		fprintf(stdout, "error: %s\n", RSTRING_PTR(obj));
 		(void)mrb_funcall(mrb, mrb_obj_value(module), "on_error", 1, mrb_obj_value(mrb->exc));
 		mrb->exc = 0;
 	}
 }
 
-BOOL mruby_load_relative(char filename[]) {
-	//fprintf(stdout, "mruby_load_relative %s\n", filename);
+#include "mruby_console.cpp"
+#include "mruby_load.cpp"
+#include "mruby_hooks.cpp"
+#include "mruby_socket.cpp"
 
-	FILE *rfile;
-	rfile = fopen(filename, "r");
-	if (rfile == NULL) {
-		fprintf(stdout, "error opening\n");
-		return false;
-	}
-
-	mrb->exc = 0;
-
-	mrbc_context *cxt = mrbc_context_new(mrb);
-	mrbc_filename(mrb, cxt, filename);
-	cxt->capture_errors = true;
-
-	mrb_parser_state *parser = mrb_parse_file(mrb, rfile, cxt);
-	fclose(rfile);
-
-	BOOL ret = false;
-	if (parser->nerr > 0) {
-		fprintf(stdout, "ERROR: %s:%d: %s (error %d)\n", filename, parser->error_buffer[0].lineno, parser->error_buffer[0].message, parser->nerr);
-	}
-	else {
-		rfile = fopen(filename, "r");
-		if (rfile == NULL) {
-			fprintf(stdout, "error opening\n");
-			return false;
-		}
-		mrb_load_file_cxt(mrb, rfile, cxt);
-		fclose(rfile);
-		if (!mrb->exc) {
-			ret = true;
-		}
-	}
-
-	mruby_check_exception();
-	mrb_parser_free(parser);
-	mrbc_context_free(mrb, cxt);
-	return ret;
-}
-
-mrb_value mruby_is_syntax_valid(mrb_state *mrb, mrb_value self) {
-	char *code;
-	size_t code_s;
-	mrb_get_args(mrb, "s", &code, &code_s);
-	mrbc_context *cxt = mrbc_context_new(mrb);
-	mrbc_filename(mrb, cxt, "eval");
-	cxt->capture_errors = true;
-	mrb_parser_state *parser = mrb_parse_string(mrb, code, cxt);
-	if (parser->nerr > 0) {
-		mrbc_context_free(mrb, cxt);
-		mrb_parser_free(parser);
-		return mrb_false_value();
-	}
-	else {
-		mrbc_context_free(mrb, cxt);
-		mrb_parser_free(parser);
-		return mrb_true_value();
-	}
-}
-
-
-mrb_value mruby__gtav__set_game_window(mrb_state *mrb, mrb_value self) {
-	mrb_int a0, a1, a2, a3, a4;
-	mrb_get_args(mrb, "iiiii", &a0, &a1, &a2, &a3, &a4);
-	fprintf(stdout, "set_game_window %i %i %i %i %i\n", a0, a1, a2, a3, a4);
-	HWND window = FindWindow(NULL, "Grand Theft Auto V");
-	fprintf(stdout, "set_game_window window %i\n", window);
-	SetWindowPos(window, NULL, a0, a1, a2, a3, a4);
-	return mrb_nil_value();
-}
-
-mrb_value mruby__gtav__set_console_window(mrb_state *mrb, mrb_value self) {
-	mrb_int a0, a1, a2, a3, a4;
-	mrb_get_args(mrb, "iiiii", &a0, &a1, &a2, &a3, &a4);
-	HWND window = GetConsoleWindow();
-	SetWindowPos(window, NULL, a0, a1, a2, a3, a4);
-	return mrb_nil_value();
-}
-
-mrb_value mruby__gtav__load(mrb_state *mrb, mrb_value self) {
-	char *filename;
-	size_t filename_s;
-	mrb_get_args(mrb, "s", &filename, &filename_s);
-	//fprintf(stdout, "mruby__gtav__load %s\n",filename);
-	BOOL ret = mruby_load_relative(filename);
-	return mrb_bool_value(ret);
-}
-
-mrb_value mruby__gtav__load_dir(mrb_state *mrb, mrb_value self) {
-	char *dirname;
-	size_t dirname_s;
-	char *pattern;
-	size_t pattern_s;
-	mrb_get_args(mrb, "ss", &dirname, &dirname_s, &pattern, &pattern_s);
-	
-	//fprintf(stdout, "mruby__gtav__load_dir %s , %s\n", dirname, pattern);
-	char filename[2048];
-
-	char dirpattern[1024];
-	sprintf(dirpattern, "%s\\%s", dirname, pattern);
-	//fprintf(stdout, "dirpattern %s\n", dirpattern);
-
-	HANDLE hFind;
-	WIN32_FIND_DATA FindFileData;
-	if ((hFind = FindFirstFile(dirpattern, &FindFileData)) != INVALID_HANDLE_VALUE) {
-		do {
-			sprintf(filename, "%s/%s", dirname, FindFileData.cFileName);
-			//fprintf(stdout, "filename %s\n", filename);
-			(void)mrb_funcall(mrb, mrb_obj_value(module), "load_script", 1, mrb_str_new_cstr(mrb, filename));
-		} while (FindNextFile(hFind, &FindFileData));
-		FindClose(hFind);
-	}
-
-	return mrb_nil_value();
-}
-
-mrb_value mruby__gtav__is_key_down(mrb_state *mrb, mrb_value self) {
-	mrb_int a0;
-	mrb_get_args(mrb, "i", &a0);
-	mrb_bool r0 = IsKeyDown(a0);
-	return mrb_bool_value(r0);
-}
-mrb_value mruby__gtav__is_key_just_up(mrb_state *mrb, mrb_value self) {
-	mrb_int a0;
-	mrb_get_args(mrb, "i", &a0);
-	mrb_bool r0 = IsKeyJustUp(a0);
-	return mrb_bool_value(r0);
-}
-
-mrb_value mruby__gtav__spawn_console(mrb_state *mrb, mrb_value self) {
-	SetStdOutToNewConsole();
-	return mrb_nil_value();
-}
-
-struct memprof_userdata {
-	unsigned int malloc_cnt;
-	unsigned int realloc_cnt;
-	unsigned int free_cnt;
-	unsigned int freezero_cnt;
-	unsigned long long total_size;
-	unsigned int current_objcnt;
-	unsigned long long current_size;
-};
-
-mrb_value mruby__gtav__world_get_all_vehicles(mrb_state *mrb, mrb_value self) {
-	const int ARR_SIZE = 1024;
-	Vehicle arr[ARR_SIZE];
-	int ret = worldGetAllVehicles(arr, ARR_SIZE);
-	mrb_value rarray = mrb_ary_new_capa(mrb, ret);
-	for (int i = 0; i < ret; i++) {
-		mrb_ary_set(mrb, rarray, i, mrb_fixnum_value(arr[i]));
-	}
-	return rarray;
-}
-
-mrb_value mruby__gtav__world_get_all_peds(mrb_state *mrb, mrb_value self) {
-	const int ARR_SIZE = 1024;
-	Ped arr[ARR_SIZE];
-	int ret = worldGetAllPeds(arr, ARR_SIZE);
-	mrb_value rarray = mrb_ary_new_capa(mrb, ret);
-	for (int i = 0; i < ret; i++) {
-		mrb_ary_set(mrb, rarray, i, mrb_fixnum_value(arr[i]));
-	}
-	return rarray;
-}
-
-mrb_value mruby__gtav__world_get_all_objects(mrb_state *mrb, mrb_value self) {
-	const int ARR_SIZE = 1024;
-	Ped arr[ARR_SIZE];
-	int ret = worldGetAllObjects(arr, ARR_SIZE);
-	mrb_value rarray = mrb_ary_new_capa(mrb, ret);
-	for (int i = 0; i < ret; i++) {
-		mrb_ary_set(mrb, rarray, i, mrb_fixnum_value(arr[i]));
-	}
-	return rarray;
-}
 
 mrb_value mruby__gtav___draw_text_many(mrb_state *mrb, mrb_value self) {
 	mrb_int font;
@@ -294,6 +88,7 @@ mrb_value mruby__gtav__reset_mruby_next_tick(mrb_state *mrb, mrb_value self) {
 
 
 
+
 // sets up the mruby vm + env
 void mruby_init() {
 	fprintf(stdout, "mruby_init\n");
@@ -309,7 +104,7 @@ void mruby_init() {
 	mrb_define_class_method(mrb, module, "is_key_just_up", mruby__gtav__is_key_just_up, MRB_ARGS_REQ(1));
 	mrb_define_class_method(mrb, module, "set_call_limit", mruby__gtav__set_call_limit, MRB_ARGS_REQ(1));
 	mrb_define_class_method(mrb, module, "get_call_limit", mruby__gtav__get_call_limit, MRB_ARGS_NONE());
-	mrb_define_class_method(mrb, module, "spawn_console", mruby__gtav__spawn_console, MRB_ARGS_NONE());
+	mrb_define_class_method(mrb, module, "spawn_console", mruby__gtav__spawn_console, MRB_ARGS_REQ(10));
 	mrb_define_class_method(mrb, module, "world_get_all_vehicles", mruby__gtav__world_get_all_vehicles, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module, "world_get_all_peds", mruby__gtav__world_get_all_peds, MRB_ARGS_NONE());
 	mrb_define_class_method(mrb, module, "world_get_all_objects", mruby__gtav__world_get_all_objects, MRB_ARGS_NONE());
@@ -319,12 +114,20 @@ void mruby_init() {
 	mrb_define_class_method(mrb, module, "set_console_window", mruby__gtav__set_console_window, MRB_ARGS_REQ(5));
 	mrb_define_class_method(mrb, module, "is_syntax_valid?", mruby_is_syntax_valid, MRB_ARGS_REQ(1));
 
+	mrb_define_class_method(mrb, module, "socket_init", mruby__gtav__socket_init, MRB_ARGS_NONE());
+	mrb_define_class_method(mrb, module, "socket_listen", mruby__gtav__socket_listen, MRB_ARGS_REQ(1));
+	mrb_define_class_method(mrb, module, "socket_accept", mruby__gtav__socket_accept, MRB_ARGS_REQ(1));
+	mrb_define_class_method(mrb, module, "socket_read", mruby__gtav__socket_read, MRB_ARGS_REQ(1));
+	mrb_define_class_method(mrb, module, "socket_write", mruby__gtav__socket_write, MRB_ARGS_REQ(2));
+	mrb_define_class_method(mrb, module, "socket_close", mruby__gtav__socket_close, MRB_ARGS_REQ(1));
 
 	fprintf(stdout, "loading bootstrap\n");
 	mruby_load_relative("./mruby/bootstrap.rb");
 
 	fprintf(stdout, "adding native functions\n");
 	mruby_install_natives(mrb);
+
+	mrb_mruby_tiny_io_gem_init(mrb);
 
 	fprintf(stdout, "loading runtime\n");
 	mruby_load_relative("./mruby/runtime.rb");
@@ -353,19 +156,11 @@ void mruby_tick() {
 }
 
 void mruby_shutdown() {
+	(void)mrb_funcall(mrb, mrb_obj_value(module), "on_shutdown", 0);
 	// shut down mruby VM
 	mrb_close(mrb);
 }
 
-
-
-
-bool initWSA() {
-	WSADATA wsadata;
-	int error = WSAStartup(0x0202, &wsadata);
-	if (error) return false;
-	return true;
-}
 
 
 
@@ -374,77 +169,15 @@ bool initWSA() {
 
 void main()
 {	
-	SOCKET s;
-	char recvbuffer[1024];
 	FILE *rfile;
 	rfile = fopen("./mruby/enable-console", "r");
 	if (rfile) {
 		fclose(rfile);
-		SetStdOutToNewConsole();
+		//SetStdOutToNewConsole();
 	}
-
-	rfile = fopen("./mruby/enable-socket", "r");
-	if (rfile) {
-		fclose(rfile);
-		socket_enabled = true;
-
-		initWSA();
-		SOCKADDR_IN addr;
-		addr.sin_family = AF_INET;
-		addr.sin_port = htons(42069);
-		addr.sin_addr.s_addr = htonl(INADDR_ANY);
-		s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-		u_long nonblocking = 1;
-		ioctlsocket(s, FIONBIO, &nonblocking);
-
-		fprintf(stdout, "socket %i\n", s);
-
-		int bi = bind(s, (LPSOCKADDR)&addr, sizeof(addr));
-		fprintf(stdout, "bind %i\n", bi);
-
-		int li = listen(s, 3);
-		fprintf(stdout, "listen %i\n", li);
-
-		fprintf(stdout, "beginning main loop\n");
-	}
-
-
 
 	while (true)
 	{
-
-		if (socket_enabled) {
-			SOCKET acc = accept(s, NULL, NULL);
-			if (acc != INVALID_SOCKET) {
-				//fprintf(stdout, "client connected\n");
-				//int wi = send(acc, "hello", 5, NULL);
-				//fprintf(stdout, "wrote data %i\n",wi);
-				memset(&recvbuffer[0], 0, sizeof(recvbuffer));
-				int ri = recv(acc, recvbuffer, sizeof(recvbuffer), 0);
-				if (ri < 0) {
-					fprintf(stdout, "read error  %d\n", ri);
-				}
-				else {
-					//fprintf(stdout, "read data %d\n", ri);
-					//fprintf(stdout, "= %s\n", recvbuffer);
-				}
-
-				mrb_value retstr = mrb_funcall(mrb, mrb_obj_value(module), "on_socket", 1, mrb_str_new_cstr(mrb, recvbuffer));
-				char* cstr = mrb_str_to_cstr(mrb, retstr);
-
-				//fprintf(stdout, "sending data %s\n", cstr);
-
-
-				int wi = send(acc, cstr, strlen(cstr), NULL);
-				//fprintf(stdout, "wrote data %i\n", wi);
-
-				//int wi = send(acc, "hello\n", 6, NULL);
-				//fprintf(stdout, "wrote data %i\n",wi);
-				closesocket(acc);
-			}
-		}
-
 
 		// F11
 		if (IsKeyDown(0x7A)) {

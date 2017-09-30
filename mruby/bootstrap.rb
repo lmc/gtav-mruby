@@ -4,7 +4,7 @@ module GTAV
   # wrapper classes for native game types
   class BoxedObject < Array
     def initialize(*args)
-      __load(args)
+      __load(*args)
     end
 
     def __load(*value)
@@ -27,7 +27,6 @@ module GTAV
   class Player < BoxedObjectInt; end
   class Pickup < BoxedObjectInt; end
   class Blip < BoxedObjectInt; end
-
   class Hash < BoxedObjectInt; end
   class ScrHandle < BoxedObjectInt; end
   class Cam < BoxedObjectInt; end
@@ -65,11 +64,23 @@ module GTAV
     puts "GTAV.log - #{args.inspect}"
   end
 
-  # create empty file called `enable-socket` in this dir, then override this method
-  # the socket is read immediately on accept, and provided as a string in the `input` arg
-  # return a string to have it written to the socket before it's closed
-  def self.on_socket(input)
-    return "GTAV.on_socket()"
+  def self.on_shutdown
+    log "GTAV.on_shutdown"
+
+    # close all open sockets, so that we can re-bind and re-listen after reloading
+    Socket.close_all!
+  end
+
+  def self.asi_version
+    "0.0.1"
+  end
+
+  def self.rb_version
+    "0.0.1"
+  end
+
+  def self.project_name
+    "gtav-mruby"
   end
 
 end

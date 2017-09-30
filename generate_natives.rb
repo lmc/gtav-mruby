@@ -296,6 +296,9 @@ define_native_multireturn("PLAYER","GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX",[:P
 define_native_multireturn("PLAYER","GET_PLAYER_PARACHUTE_PACK_TINT_INDEX",[:Player],:int,nil,"a0,&r0",nil,"r0 == -1")
 define_native_multireturn("PLAYER","GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR",[:Player],[:int,:int,:int],nil,"a0,&r0,&r1,&r2",nil,nil)
 
+define_native_multireturn("PED","GET_GROUP_SIZE",[:int],[:Any,:int],nil,"a0,&r0,&r1",nil,nil)
+define_native_multireturn("PED","IS_PED_EVASIVE_DIVING",[:Ped],:Entity,"BOOL","a0,&r0",nil,"!r")
+
 define_native_multireturn("ENTITY","GET_ENTITY_MATRIX",[:Entity],[:Any,:Any,:Vector3,:Vector3],nil,"a0,&r0,&r1,&r2,&r3",nil,nil)
 define_native_multireturn("ENTITY","GET_ENTITY_QUATERNION",[:Entity],[:float,:float,:float,:float],nil,"a0,&r0,&r1,&r2,&r3",nil,nil)
 
@@ -327,6 +330,14 @@ define_native_multireturn("WEAPON","GET_CURRENT_PED_VEHICLE_WEAPON",[:Ped],:Hash
 define_native_multireturn("WEAPON","GET_AMMO_IN_CLIP",[:Ped,:Hash],:int,"BOOL","a0,a1,&r0",nil,"!r")
 define_native_multireturn("WEAPON","GET_MAX_AMMO",[:Ped,:Hash],:int,"BOOL","a0,a1,&r0",nil,"!r")
 define_native_multireturn("WEAPON","GET_PED_LAST_WEAPON_IMPACT_COORD",[:Ped],:Vector3,"BOOL","a0,&r0",nil,"!r")
+
+define_native_multireturn("STATS","STAT_GET_INT",[:Hash,:int],:int,"BOOL","a0,&r0,a1",nil,"!r")
+define_native_multireturn("STATS","STAT_GET_FLOAT",[:Hash,:Any],:float,"BOOL","a0,&r0,a1",nil,"!r")
+define_native_multireturn("STATS","STAT_GET_BOOL",[:Hash,:Any],:BOOL,"BOOL","a0,&r0,a1",nil,"!r")
+
+define_native_multireturn("UI","REMOVE_BLIP",[:Blip],[],nil,"(Blip*) &a0",nil,true)
+define_native_multireturn("UI","GET_HUD_COLOUR",[:int],[:int,:int,:int,:int],nil,"a0,&r0,&r1,&r2,&r3",nil,nil)
+
 
 natives.each_pair do |mname,namespace|
   module_defines << "struct RClass *module_#{mname.downcase} = mrb_define_module(mrb, \"#{mname}\");"
