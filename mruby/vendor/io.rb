@@ -1,0 +1,1 @@
+class IOError < StandardError; end

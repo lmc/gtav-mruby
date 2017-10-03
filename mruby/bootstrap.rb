@@ -37,6 +37,7 @@ module GTAV
   end
 
   def self.on_error(exception)
+    log "#{exception.inspect}", :error
     log "#{exception.class} - #{exception.message}", :error
     exception.backtrace.each do |bt|
       log "  #{bt}", :error
@@ -77,10 +78,6 @@ module GTAV
 
   def self.rb_version
     "0.0.1"
-  end
-
-  def self.project_name
-    "gtav-mruby"
   end
 
 end

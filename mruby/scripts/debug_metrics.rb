@@ -7,15 +7,16 @@ GTAV.register(:DebugMetrics,CONFIG["scripts.DebugMetrics.enabled"]) do
   @has_logger = GTAV.respond_to?(:logger_buffer)
   raise "No runtime metrics available (load runtime/runtime_metrics.rb)" if !@has_metrics
 
-  DISPLAY_MODES = [:none,:time,:calls,:objects,:all]
+  DISPLAY_MODES = [:none,:minimal,:time,:calls,:objects,:all]
   DISPLAY_WIDTHS = {
     :none => [0.2,[1.0]],
+    :minimal => [0.2,[0.5,0.25,0.25]],
     :time => [0.2,[0.5,0.25,0.25]],
     :calls => [0.2,[0.5,0.25,0.25]],
     :objects => [0.2,[0.5,0.25,0.25]],
     :all => [0.3,[0.4,0.15,0.15,0.15,0.15]],
   }
-  @mode = :time
+  @mode = :minimal
 
   TICK_CHART = UiBarChart.new(x: 1.0 - 0.2 - 0.012, y: 0.01, w: 0.2, h: 0.09, limits: [0.0,0.005])
 
@@ -23,7 +24,8 @@ GTAV.register(:DebugMetrics,CONFIG["scripts.DebugMetrics.enabled"]) do
   METRICS_VALUE_TEXT_STYLE = UiStyledText.new(font: 5, scale2: 0.42, proportional: false)
   METRICS_TABLE = UiTable.new(
     x: 1.0 - 0.2 - 0.015,
-    y: 0.25,
+    y: 0.12,
+    # y: 0.25,
     w: 0.2,
     # h: 0.25,
     rh: 0.03,
@@ -78,11 +80,17 @@ GTAV.register(:DebugMetrics,CONFIG["scripts.DebugMetrics.enabled"]) do
 
   @data_update_idx = 0
   def update_data_once!
-    _update_data!(@data_update_idx)
-    @data_update_idx += 1
-    if @data_update_idx >= METRICS_TABLE.data.size - 2
-      update_totals!
-      @data_update_idx = 0
+    if @mode == :minimal
+      update_totals! if @data_update_idx == 0
+      @data_update_idx += 1
+      @data_update_idx = 0 if @data_update_idx > 10
+    else
+      _update_data!(@data_update_idx)
+      @data_update_idx += 1
+      if @data_update_idx >= METRICS_TABLE.data.size - 2
+        update_totals!
+        @data_update_idx = 0
+      end
     end
   end
 
@@ -92,12 +100,16 @@ GTAV.register(:DebugMetrics,CONFIG["scripts.DebugMetrics.enabled"]) do
     METRICS_TABLE.data[0] += ["Avg. Time","Max Time"] if [:time,:all].include?(@mode)
     METRICS_TABLE.data[0] += ["Avg. Calls","Max Calls"] if [:calls,:all].include?(@mode)
     METRICS_TABLE.data[0] += ["Avg. Objs","Max Objs"] if [:objects,:all].include?(@mode)
-    GTAV.fiber_names.each_with_index do |name,i|
-      METRICS_TABLE.data[i + 1] = []
-      update_data_once!
+    if @mode == :minimal
+
+    else
+      GTAV.fiber_names.each_with_index do |name,i|
+        METRICS_TABLE.data[i + 1] = []
+        update_data_once!
+      end
+      METRICS_TABLE.data << []
+      update_totals!
     end
-    METRICS_TABLE.data << []
-    update_totals!
   end
 
   def _update_data!(idx)
@@ -106,17 +118,17 @@ GTAV.register(:DebugMetrics,CONFIG["scripts.DebugMetrics.enabled"]) do
 
     row = []
     row << "#{idx}: #{name.to_s}"
-    if [:time,:all].include?(@mode)
+    if [:time,:all].include?(@mode) && GTAV.metrics["fiber.#{name}.tick_times"]
       tick_times = GTAV.metrics["fiber.#{name}.tick_times"].array
       row << "#{sprintf("%.3f",avg(tick_times,0.0) * 1000.0)}ms"
       row << "#{sprintf("%.3f",max(tick_times,0.0) * 1000.0)}ms"
     end
-    if [:calls,:all].include?(@mode)
+    if [:calls,:all].include?(@mode) && GTAV.metrics["fiber.#{name}.calls"]
       calls = GTAV.metrics["fiber.#{name}.calls"].array
       row << avg(calls).to_i.to_s
       row << max(calls).to_s
     end
-    if [:objects,:all].include?(@mode)
+    if [:objects,:all].include?(@mode) && GTAV.metrics["fiber.#{name}.objects"]
       calls = GTAV.metrics["fiber.#{name}.objects"].array
       row << avg(calls).to_i.to_s
       row << max(calls).to_s
@@ -130,7 +142,7 @@ GTAV.register(:DebugMetrics,CONFIG["scripts.DebugMetrics.enabled"]) do
     total_last_calls = -1
     times = GTAV.metrics["runtime.tick_times"].array
     METRICS_TABLE.data[-1] = ["GTAV.tick Total"]
-    if [:time,:all].include?(@mode)
+    if [:minimal,:time,:all].include?(@mode)
       METRICS_TABLE.data[-1] += [
         "#{sprintf("%.3f",avg(times,0.0) * 1000.0)}ms",
         "#{sprintf("%.3f",max(times,0.0) * 1000.0)}ms",
@@ -158,17 +170,26 @@ GTAV.register(:DebugMetrics,CONFIG["scripts.DebugMetrics.enabled"]) do
     LOGGER_TABLE.draw
   end
 
+  def set_mode(mode)
+    @mode = mode
+    METRICS_TABLE.x = 1.0 - DISPLAY_WIDTHS[@mode][0] - 0.015
+    METRICS_TABLE.w = DISPLAY_WIDTHS[@mode][0]
+    METRICS_TABLE.widths = DISPLAY_WIDTHS[@mode][1]
+    update_all_data!
+  end
+
   update_all_data!
 
+  GTAV.wait(0)
+  GTAV[:RuntimeMenu].register_menu_item(:DebugMetrics, type: :select, collection: Hash[DISPLAY_MODES.map{|m| [m,m] }], value: @mode) do |item|
+    set_mode(item.value)
+  end
+
   loop do
-    if GTAV.is_key_just_up(CONFIG["scripts.DebugMetrics.key"]) # F10
+    if false && GTAV.is_key_just_up(CONFIG["scripts.DebugMetrics.key"]) # F10
       mindex = DISPLAY_MODES.index(@mode) + 1
       mindex = 0 if mindex >= DISPLAY_MODES.size
-      @mode = DISPLAY_MODES[mindex]
-      METRICS_TABLE.x = 1.0 - DISPLAY_WIDTHS[@mode][0] - 0.015
-      METRICS_TABLE.w = DISPLAY_WIDTHS[@mode][0]
-      METRICS_TABLE.widths = DISPLAY_WIDTHS[@mode][1]
-      update_all_data!
+      set_mode( DISPLAY_MODES[mindex] )
     else
       update_data_once!
       # update_totals!
@@ -177,7 +198,7 @@ GTAV.register(:DebugMetrics,CONFIG["scripts.DebugMetrics.enabled"]) do
     if @mode != :none
       draw_tick_chart! if @has_metrics
       draw_table!
-      draw_logger! if @has_logger
+      # draw_logger! if @has_logger
     end
 
     GTAV.wait(0)

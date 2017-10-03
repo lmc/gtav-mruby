@@ -1,10 +1,7 @@
 
-# set to true to enable
-avm_active = false
-
 $avm_entities = QueueSet.new(32)
 
-GTAV.register(:AVM,avm_active) do
+GTAV.register(:AVM,false) do
   loop do
     player_ped_id = PLAYER::PLAYER_PED_ID()
     player_coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player_ped_id,0.0,0.0,0.0)
@@ -67,7 +64,7 @@ GTAV.register(:AVM,avm_active) do
   end
 end
 
-GTAV.register(:AVMUpdater,avm_active) do
+GTAV.register(:AVMUpdater,false) do
   ticks = 9999
   cp = nil
   loop do

@@ -12,6 +12,7 @@ module GTAV
   @@ticks = 0
 
   @@fibers = {}
+  @@fibers_modules = {}
   @@fibers_next_tick_at = {}
   @@fibers_names = nil
   @@current_fiber = nil
@@ -24,10 +25,19 @@ module GTAV
 
   def self.register(name,enabled = true,&block)
     return if !enabled
-    log "Registered '#{name}'"
-    @@fibers[name] = Fiber.new(&block)
-    @@fibers_next_tick_at[name] = 0
-    @@metrics.register_fiber(name) if @@metrics
+    if @@fibers[name]
+      log "DID NOT register '#{name}', already loaded", :warn
+    else
+      log "Registered '#{name}'"
+      # @@fibers[name] = Fiber.new(&block)
+      @@fibers[name] = Fiber.new {
+        @@fibers_modules[name] = Module.new()
+        @@fibers_modules[name].instance_eval(&block)
+      }
+      @@fibers_next_tick_at[name] = 0
+      @@metrics.register_fiber(name) if @@metrics
+      self.enable_fiber(name,enabled)
+    end
   end
 
   # gets called every engine tick by script.cpp
@@ -108,11 +118,19 @@ module GTAV
   end
 
   def self.terminate_fiber(name)
-    @@fibers.delete(name)
+    @@fibers_next_tick_at[name] = 999999999
+  end
+
+  def self.enable_fiber(name,enable)
+    @@fibers_next_tick_at[name] = enable ? 0 : 999999999
   end
 
   def self.fibers
     @@fibers
+  end
+
+  def self.fiber_wait_hash
+    ::Hash[ @@fibers.each_pair.map{|k,v| [k,@@fibers_next_tick_at[k]]} ]
   end
 
   def self.wait(ms)
@@ -137,5 +155,19 @@ module GTAV
     # ObjectSpace.count_objects(@@_object_count)
     # @@_object_count[:TOTAL] - @@_object_count[:FREE]
   end
+
+  def self.[](key)
+    @@fibers_modules[key] || @@nil_proxy
+  end
+  
+  class NilProxy
+    def method_missing(*)
+      self
+    end
+    def nil?
+      true
+    end
+  end
+  @@nil_proxy = NilProxy.new
 
 end
