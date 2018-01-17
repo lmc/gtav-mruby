@@ -68,17 +68,18 @@ mrb_value mruby__gtav__socket_accept(mrb_state *mrb, mrb_value self) {
 	}
 }
 
+static char recvbuffer[4096];
 mrb_value mruby__gtav__socket_read(mrb_state *mrb, mrb_value self) {
 	SOCKET ss;
 	mrb_get_args(mrb, "i", &ss);
-	char recvbuffer[1024];
-	memset(&recvbuffer[0], 0, sizeof(recvbuffer));
 	int ri = recv(ss, recvbuffer, sizeof(recvbuffer), 0);
 	if (ri < 0) {
 		return mrb_fixnum_value(ri);
 	}
 	else {
-		return mrb_str_new_cstr(mrb, recvbuffer);
+		mrb_value ret = mrb_str_new_cstr(mrb, recvbuffer);
+		memset(&recvbuffer[0], 0, sizeof(recvbuffer));
+		return ret;
 	}
 }
 
@@ -86,8 +87,14 @@ mrb_value mruby__gtav__socket_write(mrb_state *mrb, mrb_value self) {
 	SOCKET ss;
 	char *str;
 	int str_len;
+	mrb_value rstr;
 	mrb_get_args(mrb, "is", &ss, &str, &str_len);
-	int wi = send(ss, str, strlen(str), NULL);
+	//mrb_get_args(mrb, "iS", &ss, &rstr);
+	//str = RSTRING_PTR(rstr);
+	//str_len = RSTRING_LEN(rstr);
+	fprintf(stdout, "mruby__gtav__socket_write  %i\n", str_len);
+
+	int wi = send(ss, str, str_len, NULL);
 	if (wi < 0) {
 		return mrb_fixnum_value(wi);
 	}

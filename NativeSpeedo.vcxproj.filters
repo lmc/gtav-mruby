@@ -4,7 +4,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="script.cpp" />
     <ClCompile Include="utils.cpp" />
-    <ClCompile Include="bootstrap.c" />
+    <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="mrubynatives.cpp" />
+    <ClCompile Include="vendor\mruby-tiny-io\src\tinyio.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\enums.h">
@@ -21,6 +23,8 @@
     <ClInclude Include="..\..\inc\main.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="keyboard.h" />
+    <ClInclude Include="mrubynatives.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

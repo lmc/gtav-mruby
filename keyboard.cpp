@@ -15,6 +15,8 @@ struct {
 	BOOL isUpNow;
 } keyStates[KEYS_SIZE];
 
+static int keyJustPressed = -1;
+
 void OnKeyboardMessage(DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, BOOL isWithAlt, BOOL wasDownBefore, BOOL isUpNow)
 {
 	if (key < KEYS_SIZE)
@@ -23,6 +25,7 @@ void OnKeyboardMessage(DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, 
 		keyStates[key].isWithAlt = isWithAlt;
 		keyStates[key].wasDownBefore = wasDownBefore;
 		keyStates[key].isUpNow = isUpNow;
+		if (isUpNow) keyJustPressed = key;
 	}
 }
 
@@ -46,3 +49,5 @@ void ResetKeyState(DWORD key)
 	if (key < KEYS_SIZE)
 		memset(&keyStates[key], 0, sizeof(keyStates[0]));
 }
+
+int KeyJustUp() { return keyJustPressed; }

@@ -39,4 +39,7 @@ class QueueSet < Queue
   def delete(val)
     @hash.delete(val)
   end
+  def keys
+    @hash.keys
+  end
 end

@@ -7,8 +7,9 @@ This .asi plugin integrates the MRuby VM with Alexander Blade's Script Hook for 
 Installation
 ------------
 
-* Ensure you have [ASI Loader]() and [Script Hook]() installed
+* Ensure you have ASI Loader and Script Hook installed
 * Copy the contents of the `Install` folder into your "Grand Theft Auto V" folder.
+* If loaded successfully, you'll get a notification in the top left corner when the game finishes loading
 
 
 Boot and environment overview
@@ -67,12 +68,15 @@ Known Issues
 ------------
 
 * Not all native functions are supported (currently, 4874/5180 are available, with 306 unavailable). See mrubynatives.cpp for details
-* Apparent issues loading on Windows 8.1. If you don't see a message in the top-left corner on game load, check asiloader.log to see if it loaded. If it just says "failed to load", unfortunately I'm as stumped as you are. This was compiled using Visual Studio 2017, if anyone knows of any hidden dependencies please report it as an issue on Github.
+* Only tested on Windows 10
+* Apparent issues loading on Windows 8.1. If you don't see a message in the top-left corner on game load, check asiloader.log to see if it loaded. If it just says "failed to load", unfortunately I'm as stumped as you are. This was compiled using Visual Studio 2017, if anyone knows of any hidden dependencies please let me know.
+
+Please report issues at the github repo: https://www.github.com/lmc/gtav-mruby
 
 
 Licence
 -------
 
 MIT - Copyright 2017 Luke Mcildoon
-
+https://www.github.com/lmc/gtav-mruby
 

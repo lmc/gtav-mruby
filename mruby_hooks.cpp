@@ -11,7 +11,21 @@ mrb_value mruby__gtav__is_key_just_up(mrb_state *mrb, mrb_value self) {
 	mrb_bool r0 = IsKeyJustUp(a0);
 	return mrb_bool_value(r0);
 }
-
+mrb_value mruby__gtav__is_key_just_up_inclusive(mrb_state *mrb, mrb_value self) {
+	mrb_int a0;
+	mrb_get_args(mrb, "i", &a0);
+	mrb_bool r0 = IsKeyJustUp(a0,0);
+	return mrb_bool_value(r0);
+}
+mrb_value mruby__gtav__is_key_just_up_exclusive(mrb_state *mrb, mrb_value self) {
+	mrb_int a0;
+	mrb_get_args(mrb, "i", &a0);
+	mrb_bool r0 = IsKeyJustUp(a0,1);
+	return mrb_bool_value(r0);
+}
+mrb_value mruby__gtav__key_just_up(mrb_state *mrb, mrb_value self) {
+	return mrb_fixnum_value(KeyJustUp());
+}
 mrb_value mruby__gtav__world_get_all_vehicles(mrb_state *mrb, mrb_value self) {
 	const int ARR_SIZE = 1024;
 	Vehicle arr[ARR_SIZE];

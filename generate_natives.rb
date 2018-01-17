@@ -108,13 +108,15 @@ end
 def mrb_type_and_char(arg,i)
   case arg[:type].to_s
   when "char*"
-    [["char* a#{i};","int a#{i}_size;"],"s",["a#{i}"],["&a#{i}, &a#{i}_size"]]
+    [["char* a#{i};","int a#{i}_size;"],"s",["(a#{i}_size == 0 ? 0 : a#{i})"],["&a#{i}, &a#{i}_size"]]
   when "BOOL"
     [["mrb_bool a#{i};"],"b",["a#{i}"],["&a#{i}"]]
   when "float"
     [["mrb_float a#{i};"],"f",["a#{i}"],["&a#{i}"]]
   when "Vehicle*","Ped*","Entity*","Any*"
     [["#{arg[:type].gsub("*","")} a#{i};"],"i",["&a#{i}"],["&a#{i}"]]
+  when "intp"
+    [["int a#{i};"],"i",["a#{i}"],["&a#{i}"]]
   else
     [["mrb_int a#{i};"],"i",["a#{i}"],["&a#{i}"]]
   end
@@ -134,7 +136,7 @@ def define_native(mname,fname,argc,body)
   mrb_args_def = "MRB_ARGS_NONE()"
   mrb_args_def = "MRB_ARGS_REQ(#{argc})" if argc > 0
   $defined_functions["#{mname}::#{fname}"] = true
-  $mrb_defines << "mrb_define_class_method(mrb, module_#{mname.downcase}, \"#{fname}\", #{cname}, #{mrb_args_def});"
+  $mrb_defines << "mrb_define_method(mrb, module_#{mname.downcase}, \"#{fname}\", #{cname}, #{mrb_args_def});"
   $function_bodies << <<-CPP
   mrb_value #{cname}(mrb_state *mrb, mrb_value self) {#{WITH_TICK_CHECK ? tick_check : ""}
     #{body}
@@ -296,6 +298,7 @@ define_native_multireturn("PLAYER","GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX",[:P
 define_native_multireturn("PLAYER","GET_PLAYER_PARACHUTE_PACK_TINT_INDEX",[:Player],:int,nil,"a0,&r0",nil,"r0 == -1")
 define_native_multireturn("PLAYER","GET_PLAYER_PARACHUTE_SMOKE_TRAIL_COLOR",[:Player],[:int,:int,:int],nil,"a0,&r0,&r1,&r2",nil,nil)
 
+define_native_multireturn("PED","GET_PED_LAST_DAMAGE_BONE",[:Ped],:Any,nil,"a0,&r0",nil,nil)
 define_native_multireturn("PED","GET_GROUP_SIZE",[:int],[:Any,:int],nil,"a0,&r0,&r1",nil,nil)
 define_native_multireturn("PED","IS_PED_EVASIVE_DIVING",[:Ped],:Entity,"BOOL","a0,&r0",nil,"!r")
 
@@ -321,9 +324,12 @@ define_native_multireturn("VEHICLE","_GET_VEHICLE_OWNER",[:Vehicle],:Entity,"BOO
 
 define_native_multireturn("GRAPHICS","GET_SCREEN_RESOLUTION",[],[:int,:int],nil,"&r0,&r1",nil,nil)
 define_native_multireturn("GRAPHICS","_GET_SCREEN_ACTIVE_RESOLUTION",[],[:int,:int],nil,"&r0,&r1",nil,nil)
+define_native_multireturn("GRAPHICS","SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED",[:intp],[],nil,"&a0",nil,nil)
 
 define_native_multireturn("GAMEPLAY","GET_MODEL_DIMENSIONS",[:Hash],[:Vector3,:Vector3],nil,"a0,&r0,&r1",nil,nil)
 define_native_multireturn("GAMEPLAY","GET_GROUND_Z_FOR_3D_COORD",[:float,:float,:float,:BOOL],:float,nil,"a0,a1,a2,&r0,a3",nil,nil)
+
+define_native_multireturn("GAMEPLAY","_GET_WEATHER_TYPE_TRANSITION",[],[:Any,:Any,:float],nil,"&r0,&r1,&r2",nil,nil)
 
 define_native_multireturn("WEAPON","GET_CURRENT_PED_WEAPON",[:Ped,:BOOL],:Hash,"BOOL","a0,&r0,a1",nil,"!r")
 define_native_multireturn("WEAPON","GET_CURRENT_PED_VEHICLE_WEAPON",[:Ped],:Hash,"BOOL","a0,&r0",nil,"!r")
@@ -337,6 +343,8 @@ define_native_multireturn("STATS","STAT_GET_BOOL",[:Hash,:Any],:BOOL,"BOOL","a0,
 
 define_native_multireturn("UI","REMOVE_BLIP",[:Blip],[],nil,"(Blip*) &a0",nil,true)
 define_native_multireturn("UI","GET_HUD_COLOUR",[:int],[:int,:int,:int,:int],nil,"a0,&r0,&r1,&r2,&r3",nil,nil)
+
+define_native_multireturn("PATHFIND","GET_STREET_NAME_AT_COORD",[:float,:float,:float],[:Hash,:Hash],nil,"a0,a1,a2,&r0,&r1",nil,nil)
 
 
 natives.each_pair do |mname,namespace|
@@ -369,7 +377,7 @@ natives.each_pair do |mname,namespace|
       mrb_args_def = "MRB_ARGS_REQ(#{definition[:arguments].size})"
     end
 
-    $mrb_defines << "mrb_define_class_method(mrb, module_#{mname.downcase}, \"#{fname}\", #{cname}, #{mrb_args_def});"
+    $mrb_defines << "mrb_define_method(mrb, module_#{mname.downcase}, \"#{fname}\", #{cname}, #{mrb_args_def});"
     $function_bodies << <<-CPP
 mrb_value #{cname}(mrb_state *mrb, mrb_value self) {#{WITH_TICK_CHECK ? tick_check : ""}#{"\n  "+mrb_value_defs+"\n" if mrb_value_defs.size > 0}#{"  "+mrb_get_args+"" if mrb_get_args}
   #{cassigns_for_type(definition[:return_type])}#{mname}::#{fname}(#{cargs});

@@ -17,8 +17,9 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
 		keyboardHandlerRegister(OnKeyboardMessage);
 		break;
 	case DLL_PROCESS_DETACH:
-		scriptUnregister(hInstance);
+		mruby_shutdown();
 		keyboardHandlerUnregister(OnKeyboardMessage);
+		scriptUnregister(hInstance);
 		break;
 	}		
 	return TRUE;

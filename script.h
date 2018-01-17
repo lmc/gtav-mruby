@@ -12,4 +12,5 @@
 
 #include "..\..\inc\main.h"
 
+void mruby_shutdown();
 void ScriptMain();

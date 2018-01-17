@@ -14,3 +14,4 @@ void OnKeyboardMessage(DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, 
 bool IsKeyDown(DWORD key);
 bool IsKeyJustUp(DWORD key, bool exclusive = true);
 void ResetKeyState(DWORD key);
+int KeyJustUp();

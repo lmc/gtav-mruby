@@ -97,3 +97,33 @@ mrb_value mruby__gtav__load_dir(mrb_state *mrb, mrb_value self) {
 
 	return mrb_nil_value();
 }
+
+mrb_value mruby__gtav__dir_glob(mrb_state *mrb, mrb_value self) {
+	char *dirname;
+	size_t dirname_s;
+	char *pattern;
+	size_t pattern_s;
+	mrb_value block;
+	mrb_get_args(mrb, "ss&", &dirname, &dirname_s, &pattern, &pattern_s, &block);
+
+	//fprintf(stdout, "mruby__gtav__load_dir %s , %s\n", dirname, pattern);
+	char filename[2048];
+
+	char dirpattern[1024];
+	sprintf(dirpattern, "%s\\%s", dirname, pattern);
+	//fprintf(stdout, "dirpattern %s\n", dirpattern);
+
+	HANDLE hFind;
+	WIN32_FIND_DATA FindFileData;
+	if ((hFind = FindFirstFile(dirpattern, &FindFileData)) != INVALID_HANDLE_VALUE) {
+		do {
+			sprintf(filename, "%s\\%s", dirname, FindFileData.cFileName);
+			//fprintf(stdout, "filename %s\n", filename);
+			//(void)mrb_funcall(mrb, mrb_obj_value(module), "load_script", 1, mrb_str_new_cstr(mrb, filename));
+			(void)mrb_yield(mrb, block, mrb_str_new_cstr(mrb, filename));
+		} while (FindNextFile(hFind, &FindFileData));
+		FindClose(hFind);
+	}
+
+	return mrb_nil_value();
+}

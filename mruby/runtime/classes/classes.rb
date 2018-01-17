@@ -21,6 +21,18 @@ class GTAV::Vector3
   def z=(v); self[2] = v; end
 end
 
+class Class
+  def name
+    to_s
+  end
+end
+
+class Module
+  def name
+    to_s
+  end
+end
+
 module GTAV
   @@boot_time = Time.now.to_i
 
@@ -48,107 +60,59 @@ def enum_to_hash(enum)
   hash
 end
 
-
-class PersistentHash
-
-  def initialize(filename,defaults_filename = nil)
-    @filename = filename
-    @defaults_filename = defaults_filename
-    @defaults_prefix = nil
-    @hash = {}
-    @metadata = {}
-    load_from_file(true)
-    load_from_file(false)
-  end
-
-  def [](key)
-    @hash.key?(key) ? @hash[key] : (@metadata[key] && @metadata[key][:default])
-  end
-
-  def []=(key,value)
-    @hash[key] = value
-    @metadata[key] = {} if !@metadata[key]
-    @metadata[key][:changed] = true
-  end
-
-  def load_from_file(defaults = false)
-    begin
-      filename = defaults ? @defaults_filename : @filename
-      io = File.new(filename,"r")
-      data = io.read()
-      # log "data: #{data}"
-      buffer = ""
-      data.lines.each do |line|
-        sline = line.strip
-        if sline[0] == "#" || sline.size == 0
-          buffer << line
-        else
-          state = :begin
-          values = {}
-          sline.chars.each_with_index do |c,i|
-            if c == "[" && state == :begin
-              state = :key
-              next
-            elsif c == "]" && state == :key
-              state = :assign
-            elsif c == "=" && state == :assign
-              state = :assign2
-              next
-            elsif c != " " && state == :assign2
-              state = :value
-            end
-            if state != :assign && state != :assign2
-              values[state] = "" if !values[state]
-              values[state] << c
-            end
-          end
-
-          if values[:key][0] == '"' && values[:key][-1] == '"'
-            values[:key] = values[:key][1..-2]
-          end
-          
-          value = values[:value]
-          value = GTAV.is_syntax_valid?(value) ? eval(value) : nil
-          if defaults
-            @metadata[ values[:key] ] = {default: value, default_buffer: buffer}
-            @defaults_prefix = values[:begin] if !@defaults_prefix && values[:begin].size > 0
-          else
-            @hash[ values[:key] ] = value
-            @metadata[ values[:key] ] = {} if !@metadata[ values[:key] ]
-            @metadata[ values[:key] ][:matches] = values
-            @metadata[ values[:key] ][:buffer] = buffer
-          end
-          buffer = ""
-        end
-      end
-      io.close
-    rescue IOError
-      nil
+def terminate_script_named(target)
+  SCRIPT::_0xDADFADA5A20143A8()
+  loop do
+    idx = SCRIPT::_0x30B4FA1C82DD4B9F()
+    break if idx <= 0
+    name = SCRIPT::_GET_THREAD_NAME(idx)
+    if name == target
+      SCRIPT::TERMINATE_THREAD(idx)
+      return true
     end
   end
-
-  def write_to_file
-    begin
-      io = File.new(@filename,"w")
-      @hash.each_pair do |key,value|
-        if !@metadata[key]
-          log "no metadata for #{key.inspect}"
-        end
-        if @metadata[key][:changed]
-          value = value.inspect
-        else
-          value = @metadata[key][:matches][:value]
-        end
-        io.print @metadata[key][:buffer]
-        k = @defaults_prefix
-        k = @metadata[key][:matches][:begin] if @metadata[key][:matches]
-        io.puts "#{k}[#{key.inspect}] = #{value}"
-      end
-      io.close
-    rescue IOError
-      nil
-    end
-  end
-
+  false
 end
 
+$__every_next = Hash.new{ |h,k| h[k] = 0 }
+def every(ms,time = GTAV.time,&block)
+  if $__every_next[block.source_location.hash] <= time
+    yield
+    $__every_next[block.source_location.hash] = time + ms
+  end
+end
+
+# maybe lambda#debounce instead ?
+# or metaprogramming to alias_method_chain it
+
+def search_memory(pattern, start = nil, stop = nil)
+  start = GTAV.memory_base if !start
+  stop  = start + GTAV.memory_base_size if !stop
+  pattern_i = 0
+  start.upto(stop) do |addr|
+    if pattern_i >= pattern.size
+      return addr - pattern.size
+    elsif pattern[pattern_i].nil?
+      pattern_i += 1
+    elsif GTAV.memory_read(addr,1).ord == pattern[pattern_i]
+      pattern_i += 1
+    else
+      pattern_i = 0
+    end
+  end
+  return nil
+end
+
+# puts "searching memory - #{GTAV.memory_read(GTAV.memory_base,1).ord}"
+# _ = nil
+
+# # this pattern don't work
+# # res = search_memory( [0x80,0x3D,_,_,_,_,_,0x74,0x27,0x84,0xC0] )
+
+# # this pattern works
+# res = search_memory( [0x44,0x38,0x3d,_,_,_,_,0x74,0x0f] )
+# # res = search_memory( ["M".ord,"Z".ord] )
+# puts "res: #{res.inspect}"
+# puts "res: #{GTAV.memory_read(res,14).bytes.inspect}"
+# $original = GTAV.memory_read(res,14)
+# GTAV.memory_write(res,([0x90] * 14).map(&:chr).join)
